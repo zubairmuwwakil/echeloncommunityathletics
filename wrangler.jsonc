@@ -1,0 +1,24 @@
+// Cloudflare Workers config: the built site in ./dist, plus worker/index.js for /api/*.
+// Deploy from an account Echelon controls (not a personal or Zemi account).
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "echelon-site",
+  "main": "worker/index.js",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "404-page",
+    "html_handling": "force-trailing-slash",
+    "run_worker_first": ["/api/*"]
+  },
+  "vars": {
+    "SITE_ORIGIN": "https://echeloncommunity.ca",
+    "MAIL_DOMAIN": "echeloncommunity.ca"
+    // Set when email is ready (see README, "Forms"):
+    // "MAIL_FROM": "website@echeloncommunity.ca",
+    // "MAIL_TO": "<the verified Echelon inbox>"
+  }
+  // Once Email Routing is on and MAIL_TO is verified, add:
+  // "send_email": [{ "name": "SEND_EMAIL", "destination_address": "<the verified Echelon inbox>" }]
+}

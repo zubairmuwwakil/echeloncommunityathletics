@@ -1,0 +1,69 @@
+---
+import Layout from "../layouts/Layout.astro";
+import InquiryForm from "../components/InquiryForm.astro";
+
+const audiences = [
+  {
+    id: "schools",
+    title: "Schools and municipalities",
+    body: "We plan, staff and run sport programs in your space: after-school sport, March Break and summer camps, and community nights. You get a program your residents or students love without hiring for it.",
+    points: ["Programs for every age group", "Registration and payments handled", "We hold our own insurance and permits"],
+    verify: "Only claim insurance and permits once they are in Echelon's own name.",
+  },
+  {
+    id: "residences",
+    title: "Seniors' residences and community centres",
+    body: "Daytime pickleball and gentle movement sessions, run on a regular schedule by people who enjoy working with older adults.",
+    points: ["Weekly or monthly sessions", "Pace adapted to the group", "Equipment brought to you"],
+    verify: "Confirm Echelon can supply equipment for off-site sessions.",
+  },
+  {
+    id: "workplaces",
+    title: "Workplaces",
+    body: "Team play days, lunch-hour clinics and season-long workplace leagues. Real activity that mixes departments and gets people talking.",
+    points: ["Half-day and full-day events", "Workplace leagues", "Beginner-friendly by design"],
+  },
+  {
+    id: "sponsors",
+    title: "Sponsors",
+    body: "Back programs that get your neighbours moving, from equipment for a new site to subsidized spots for families. Echelon isn't a registered charity, so sponsorships are recognized publicly, not with tax receipts.",
+    points: ["Program and event naming", "Recognition on site and at events", "Annual impact summary"],
+    verify: "Promise an impact summary only once you'll publish one with verified numbers.",
+  },
+];
+---
+<Layout title="Partner with us" description="Schools, municipalities, seniors' residences, workplaces and sponsors: work with Echelon to bring sport and recreation to your community.">
+  <section class="page-head">
+    <div class="wrap">
+      <h1 class="display">Partner with us.</h1>
+      <p class="lede">More people playing, closer to home. If you have the space, the people or the support, we'll bring the program.</p>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <div class="trust partner-grid">
+      {audiences.map((a) => (
+        <div id={a.id} data-verify={a.verify}>
+          <h2 class="h3">{a.title}</h2>
+          <p>{a.body}</p>
+          <ul class="ticks">
+            {a.points.map((pt) => <li>{pt}</li>)}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap split">
+      <div>
+        <p class="kicker">Start a conversation</p>
+        <h2 class="h2">Tell us what you have in mind.</h2>
+        <p class="lede mt">A few lines is plenty. We'll reply by email, usually within a few business days, to set up a call.</p>
+      </div>
+      <div class="panel">
+        <InquiryForm kind="partner" id="partner" />
+      </div>
+    </div>
+  </section>
+</Layout>

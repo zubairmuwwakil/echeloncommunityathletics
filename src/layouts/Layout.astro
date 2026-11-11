@@ -1,0 +1,148 @@
+---
+import "../styles/global.css";
+import BrandMark from "../components/BrandMark.astro";
+import InquiryForm from "../components/InquiryForm.astro";
+import { site, lines } from "../data/site";
+
+interface Props {
+  title?: string;
+  description?: string;
+  jsonLd?: Record<string, unknown>;
+}
+
+const {
+  title,
+  description = "Echelon Community Athletics is a federally incorporated Canadian not-for-profit making sport and recreation open to everyone. Starting in Durham Region, Ontario.",
+  jsonLd,
+} = Astro.props;
+
+const fullTitle = title ? `${title} · ${site.name}` : `${site.name} · Sport and recreation for everyone`;
+const canonical = new URL(Astro.url.pathname, site.url).href;
+const path = Astro.url.pathname;
+const nav = [
+  { href: "/programs/", label: "Programs" },
+  { href: "/partner/", label: "Partner" },
+  { href: "/support/", label: "Support us" },
+  { href: "/about/", label: "About" },
+  { href: "/contact/", label: "Contact" },
+];
+const current = (href: string) => (path.startsWith(href) ? "page" : undefined);
+---
+<!doctype html>
+<html lang="en-CA" class:list={{ review: site.review }}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#fbfbf8" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0e0f11" media="(prefers-color-scheme: dark)" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content="en_CA" />
+    {site.review && <meta name="robots" content="noindex" />}
+    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+
+    <header class="header" data-header>
+      <div class="wrap header-in">
+        <a class="brand" href="/" aria-label={`${site.name}, home`}>
+          <BrandMark colored />
+          <span class="brand-word"><b>Echelon</b><span>Community Athletics</span></span>
+        </a>
+        <nav class="nav" aria-label="Main">
+          {nav.map((n) => <a href={n.href} aria-current={current(n.href)}>{n.label}</a>)}
+        </nav>
+        <a class="btn btn-primary btn-sm header-cta" href="/programs/">Find a program</a>
+        <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-menu" data-menu-btn>
+          <span></span><span></span>
+          <span class="visually-hidden">Menu</span>
+        </button>
+      </div>
+    </header>
+
+    <div class="mobile-menu" id="mobile-menu" data-menu>
+      <nav aria-label="Main">
+        {nav.map((n) => <a href={n.href} aria-current={current(n.href)}>{n.label}</a>)}
+      </nav>
+      <button class="btn btn-quiet" type="button" data-interest>Tell us what you'd play</button>
+    </div>
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <footer class="footer">
+      <div class="wrap">
+        <div class="footer-grid">
+          <div class="footer-about">
+            <a class="brand" href="/" aria-label={`${site.name}, home`}>
+              <BrandMark colored />
+              <span class="brand-word"><b>Echelon</b><span>Community Athletics</span></span>
+            </a>
+            <p>A Canadian not-for-profit making sport and recreation open to everyone. Starting in {site.region}.</p>
+          </div>
+          <div>
+            <h2>Programs</h2>
+            <ul>
+              <li><a href="/programs/pickleball/">Pickleball</a></li>
+              {lines.slice(1).map((l) => <li><a href={`/programs/?line=${l.id}`}>{l.name}</a></li>)}
+            </ul>
+          </div>
+          <div>
+            <h2>Echelon</h2>
+            <ul>
+              <li><a href="/about/">About</a></li>
+              <li><a href="/partner/">Partner with us</a></li>
+              <li><a href="/support/">Support us</a></li>
+              <li><a href="/contact/">Contact</a></li>
+              <li><a href="/privacy/">Privacy</a></li>
+            </ul>
+          </div>
+          <div>
+            <h2>Get in touch</h2>
+            <ul>
+              <li><a href={`mailto:${site.email}`} data-verify={site.emailVerify}>{site.email}</a></li>
+              <li><button class="more" type="button" data-interest>Join a program waitlist</button></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-legal">
+          <span>© {new Date().getFullYear()} {site.legalName} · Corporation no. {site.corporationNumber}</span>
+          <span>Federally incorporated not-for-profit. Not a registered charity.</span>
+        </div>
+      </div>
+    </footer>
+
+    <dialog class="sheet" id="interest" aria-labelledby="interest-title">
+      <div class="sheet-in">
+        <div class="sheet-head">
+          <div>
+            <h2 id="interest-title">Tell us you're interested</h2>
+            <p>We're deciding what to launch next. Programs with the most interest go first.</p>
+          </div>
+          <button class="close" type="button" data-close aria-label="Close">✕</button>
+        </div>
+        <InquiryForm kind="interest" id="sheet" />
+      </div>
+    </dialog>
+
+    {site.review && (
+      <details class="review-bar" data-review-bar>
+        <summary>Review draft · <span data-review-count>0</span> notes</summary>
+        <ol data-review-list></ol>
+      </details>
+    )}
+
+    <script>
+      import "../scripts/site.ts";
+    </script>
+  </body>
+</html>

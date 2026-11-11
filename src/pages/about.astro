@@ -1,0 +1,110 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { site } from "../data/site";
+
+const ledger: { label: string; value: string; verify?: string }[] = [
+  { label: "Legal name", value: site.legalName },
+  { label: "Incorporated", value: `${site.incorporated}, under the Canada Not-for-profit Corporations Act` },
+  { label: "Corporation no.", value: site.corporationNumber },
+  { label: "Tax status", value: "Not-for-profit. Not a registered charity, so we can't issue charitable tax receipts." },
+  { label: "Programs today", value: site.region },
+  {
+    label: "Sport affiliation",
+    value: "Affiliate club of Pickleball Ontario",
+    verify: "The affiliation was signed as “Echelon Pickleball Club” with three directors; Corporations Canada lists one. Update Pickleball Ontario before claiming it.",
+  },
+  { label: "Registration", value: "PB Social, a separate company's software we use for sign-ups and payments" },
+];
+---
+<Layout title="About" description="Echelon Community Athletics Inc. is a federally incorporated not-for-profit for sport and recreation in Durham Region, Ontario.">
+  <section class="page-head">
+    <div class="wrap">
+      <h1 class="display">Sport is how neighbours meet.</h1>
+      <p class="lede">Echelon started with a simple idea: if playing is easy to start, affordable and close to home, more people will play, and keep playing together. We began in Durham Region. We're building Echelon to reach communities across Canada.</p>
+    </div>
+  </section>
+
+  <section class="section-tight reveal">
+    <div class="wrap split">
+      <div>
+        <p class="kicker">Our mission</p>
+        <h2 class="h2">Healthier, more connected communities.</h2>
+      </div>
+      <div>
+        <p class="lede">{site.mission}</p>
+        <p class="muted mt">We started with pickleball because it's one of the easiest sports to pick up and one of the most social to keep playing. Next come programs for kids and teens, adults and older adults, chosen by what our community asks for.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section reveal">
+    <div class="wrap split">
+      <div>
+        <p class="kicker">From our founder</p>
+        <h2 class="h2">Why I started Echelon.</h2>
+      </div>
+      <figure class="founder" data-verify="Write this yourself, in your own voice. A true story told plainly moves funders far more than polished copy. Add a real photo of you at a program, with permission from anyone else in it.">
+        <blockquote>
+          <p>[Your words, 150 to 250 of them. What did you see in your community that made you start Echelon? A moment, a person, a gap that bothered you. Why sport? What do you want Echelon to mean to someone walking into their first session?]</p>
+        </blockquote>
+        <figcaption>[Your name], Founder</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section-tight reveal">
+    <div class="wrap">
+      <div class="vision">
+        <p class="kicker">Where we're going</p>
+        <p class="vision-line">{site.vision}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight reveal">
+    <div class="wrap">
+      <div class="trust">
+        <div>
+          <h3>Welcoming by design</h3>
+          <p>Every program has a way in for beginners. Structure makes the first night easy.</p>
+        </div>
+        <div>
+          <h3>Coaching, not just court time</h3>
+          <p>Instruction and real games together, so skills stick and people come back.</p>
+        </div>
+        <div>
+          <h3>Neighbours, not strangers</h3>
+          <p>Small groups and the same faces each week turn a program into a community.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section reveal">
+    <div class="wrap split">
+      <div>
+        <p class="kicker">The facts</p>
+        <h2 class="h2">Run in the open.</h2>
+        <p class="lede mt">Echelon has no owners or shareholders. Program revenue pays for programs. If Echelon ever winds down, our articles send what's left to qualified community organizations, never to individuals.</p>
+      </div>
+      <dl class="ledger">
+        {ledger.map((r) => (
+          <div data-verify={r.verify}><dt>{r.label}</dt><dd>{r.value}</dd></div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <section class="section-tight reveal">
+    <div class="wrap split">
+      <div class="note-card" data-verify="These are commitments from the draft PB Social terms. Publish this only once Echelon has accepted those terms and the conflict disclosure is on record.">
+        <h3>Relationship disclosure</h3>
+        <p>Echelon's founding director also develops PB Social, the registration software Echelon uses. Echelon and PB Social are separate. Echelon uses PB Social only on terms that are the same as any other community organization's, and its participant information is never used to market other products without separate consent.</p>
+      </div>
+      <div class="note-card">
+        <h3>Get involved</h3>
+        <p>We're looking for coaches, volunteers and people with experience in community sport, finance or nonprofit governance. <a href="/contact/">Get in touch</a>.</p>
+      </div>
+    </div>
+  </section>
+</Layout>

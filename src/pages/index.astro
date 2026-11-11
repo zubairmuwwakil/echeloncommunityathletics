@@ -1,0 +1,265 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Glyph from "../components/Glyph.astro";
+import { site, lines, programs } from "../data/site";
+
+const featured = programs.find((p) => p.id === "pickleball-learn")!;
+const upcoming = programs.filter((p) => p.status === "interest");
+const where = featured.where;
+
+/* Every figure links to its source. Re-check each one before publishing. */
+const stats = [
+  {
+    num: "39%",
+    text: "of Canadian children and youth aged 5 to 17 get the 60 minutes of daily activity they need.",
+    source: "ParticipACTION Report Card, 2024",
+    href: "https://www.participaction.com/wp-content/uploads/2024/05/2024_Report_Card_Physical_Activity_Children_Youth_Press_Release.pdf",
+    verify: "Confirm against the source; replace with the 2026 Report Card figure if one has been released.",
+  },
+  {
+    num: "48%",
+    text: "of young Canadians who don't play sport say cost is the main reason.",
+    source: "Canadian Tire Jumpstart, State of Youth Sport 2025",
+    href: "https://jumpstart.canadiantire.ca/",
+    verify: "Found in a summary of Jumpstart's report. Confirm the figure and link the report itself before publishing.",
+  },
+  {
+    num: "1 in 11",
+    text: "Canadians aged 65 and over say they always or often feel lonely.",
+    source: "Statistics Canada, 2024",
+    href: "https://www.statcan.gc.ca/o1/en/plus/8956-look-moods-and-mental-health-older-canadians",
+    verify: "9.2% in Q4 2024, per a Statistics Canada article. Confirm on the source page.",
+  },
+];
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "SportsOrganization",
+  name: site.legalName,
+  alternateName: site.name,
+  url: site.url,
+  description: site.mission,
+  nonprofitStatus: "Nonprofit",
+  areaServed: { "@type": "AdministrativeArea", name: "Durham Region, Ontario, Canada" },
+  sport: ["Pickleball"],
+};
+---
+<Layout jsonLd={jsonLd}>
+  <section class="hero">
+    <div class="wrap">
+      <h1 class="display">Come play with us.</h1>
+      <p class="lede">
+        Echelon is a Canadian not-for-profit on a mission to make sport and recreation open to everyone, whatever
+        their age, ability or budget. We started with pickleball in Durham Region. We're just getting started.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="/programs/">Find a program</a>
+        <a class="more" href="/support/">Help more people play</a>
+      </div>
+
+      <nav class="steps" aria-label="Program areas">
+        {lines.map((line) => (
+          <a
+            class={`tile tone-${line.id}`}
+            href={line.id === "pickleball" ? "/programs/pickleball/" : `/programs/?line=${line.id}`}
+          >
+            <Glyph line={line.id} />
+            <h2>{line.name}</h2>
+            <p>{line.short}</p>
+            <span class:list={["status", { open: line.open }]}>{line.open ? "Registering now" : "Coming next"}</span>
+          </a>
+        ))}
+      </nav>
+    </div>
+  </section>
+
+  <section class="section reveal" id="why">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="kicker">Why we exist</p>
+        <h2 class="h2">Too many people are sitting out.</h2>
+        <p class="lede">Sport is where kids build confidence, newcomers make friends and older adults stay connected. Yet cost, distance and not knowing where to start keep too many people on the sidelines. Echelon exists to remove those reasons, one community at a time.</p>
+      </div>
+      <div class="stats">
+        {stats.map((st) => (
+          <figure class="stat" data-verify={st.verify}>
+            <p class="num">{st.num}</p>
+            <figcaption>
+              <p>{st.text}</p>
+              <a class="source" href={st.href} rel="noopener">{st.source}</a>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight reveal">
+    <div class="wrap">
+      <article class="feature tone-pickleball">
+        <div>
+          <span class="status open">Registering now</span>
+          <h2 class="h2">{featured.title}</h2>
+          <p class="lede">{featured.summary}</p>
+          <div class="feature-actions">
+            <a class="btn btn-primary" href={site.registerUrl} data-verify={site.registerVerify}>Register on PB Social ↗</a>
+            <a class="more" href="/programs/pickleball/">How it works</a>
+          </div>
+        </div>
+        <dl class="facts">
+          {featured.facts.map((f) => (
+            <div data-verify={f.verify}>
+              <dt>{f.label}</dt>
+              <dd>{f.value}</dd>
+            </div>
+          ))}
+          <div class="wide" data-verify={featured.verify}>
+            <dt>Where</dt>
+            <dd>{where.join(", ")}</dd>
+          </div>
+        </dl>
+      </article>
+    </div>
+  </section>
+
+  <section class="section reveal">
+    <div class="wrap split">
+      <div class="section-head">
+        <p class="kicker">Coming next</p>
+        <h2 class="h2">Help decide what we launch.</h2>
+        <p class="lede">
+          These programs are in the works. Tell us which one you'd join, and where. The ones with the most interest
+          open first.
+        </p>
+      </div>
+      <div class="rows" data-verify={upcoming[0].verify}>
+        {upcoming.map((p) => (
+          <div class={`row tone-${p.line}`}>
+            <span class="glyph-chip"><Glyph line={p.line} /></span>
+            <div>
+              <h3>{p.title}</h3>
+              <p>{p.facts[0]?.value}</p>
+            </div>
+            <button class="btn btn-quiet btn-sm" type="button" data-interest={p.id}>
+              I'm interested<span class="visually-hidden"> in {p.title}</span>
+            </button>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section reveal">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="kicker">How it works</p>
+        <h2 class="h2">Three steps to your first game.</h2>
+      </div>
+      <ol class="how how-list">
+        <li>
+          <h3>Find your program</h3>
+          <p>Pick by age, sport or town, then check the dates, place and price.</p>
+        </li>
+        <li>
+          <h3>Register online</h3>
+          <p>Sign up and pay in a couple of minutes through PB Social, the registration service we use.</p>
+        </li>
+        <li>
+          <h3>Show up and play</h3>
+          <p>Wear comfortable clothes and indoor court shoes. No experience or team needed.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section reveal">
+    <div class="wrap split">
+      <div>
+        <p class="kicker">Where we play</p>
+        <h2 class="h2">Close to home.</h2>
+        <p class="lede mt">
+          We use school gyms and community spaces in the neighbourhoods where people already live, so getting to a
+          game takes minutes, not an evening.
+        </p>
+      </div>
+      <ul class="places" data-verify={featured.verify}>
+        {where.map((t) => <li>{t}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section-tight reveal">
+    <div class="wrap">
+      <div class="band">
+        <h2 class="h2">Bring Echelon to your community.</h2>
+        <p class="lede">We're looking for schools, municipalities, seniors' residences and workplaces to run programs with, and for local sponsors who want more people playing.</p>
+        <div class="band-grid">
+          <a class="band-card" href="/partner/#schools">
+            <h3>Schools and municipalities</h3>
+            <p>After-school sport, camps and community programs, staffed and run by us.</p>
+            <span class="more">Learn more</span>
+          </a>
+          <a class="band-card" href="/partner/#workplaces">
+            <h3>Workplaces</h3>
+            <p>Team play days and workplace leagues that people actually look forward to.</p>
+            <span class="more">Learn more</span>
+          </a>
+          <a class="band-card" href="/partner/#sponsors">
+            <h3>Sponsors</h3>
+            <p>Put your name behind programs that get your neighbours moving.</p>
+            <span class="more">Learn more</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section reveal">
+    <div class="wrap">
+      <div class="give" data-verify="The Play Fund doesn't exist yet. Set it up as a separate line in Echelon's books, used only for subsidized spots, before inviting money for it.">
+        <div>
+          <p class="kicker">The Play Fund</p>
+          <h2 class="h2">Every kid who wants to play should get to.</h2>
+          <p class="lede mt">The Play Fund covers program fees for kids, families and older adults who couldn't otherwise join. Sponsors, funders and neighbours make it possible.</p>
+          <div class="feature-actions">
+            <a class="btn btn-primary" href="/support/">Support the Play Fund</a>
+            <a class="more" href="/support/#funders">For foundations and funders</a>
+          </div>
+        </div>
+        <div class="give-art" aria-hidden="true">
+          <svg viewBox="0 0 300 240">
+            <rect x="20" y="150" width="40" height="70" rx="20" fill="var(--pickleball)" />
+            <rect x="74" y="120" width="40" height="100" rx="20" fill="var(--youth)" />
+            <rect x="128" y="90" width="40" height="130" rx="20" fill="var(--active)" />
+            <rect x="182" y="60" width="40" height="160" rx="20" fill="var(--leagues)" />
+            <rect x="236" y="30" width="40" height="190" rx="20" fill="var(--events)" />
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section reveal">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="kicker">Who we are</p>
+        <h2 class="h2">A not-for-profit, run in the open.</h2>
+      </div>
+      <div class="trust">
+        <div>
+          <h3>Every dollar stays in the game</h3>
+          <p>Echelon has no owners or shareholders. Program fees pay for gyms, coaches and equipment, and any surplus goes back into programs.</p>
+        </div>
+        <div>
+          <h3>Built to belong to the community</h3>
+          <p>Our articles say that if Echelon ever closes, what's left goes to other qualified community organizations, never to individuals.</p>
+        </div>
+        <div>
+          <h3>Straight about what we are</h3>
+          <p>Federally incorporated in 2026 under the Canada Not-for-profit Corporations Act. Not a registered charity, so we can't issue donation tax receipts.</p>
+        </div>
+      </div>
+      <p class="mt-lg"><a class="more" href="/about/">About Echelon</a></p>
+    </div>
+  </section>
+</Layout>

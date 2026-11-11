@@ -1,0 +1,83 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Glyph from "../../components/Glyph.astro";
+import { programs, activities, whoLabels, lineName, type Who } from "../../data/site";
+
+const whoOptions: [string, string][] = [["all", "Everyone"], ...(Object.entries(whoLabels) as [Who, string][])];
+---
+<Layout title="Programs" description="Find an Echelon program by age, sport and town across Durham Region. Register for what's running now, or join the waitlist for what's next.">
+  <section class="page-head">
+    <div class="wrap">
+      <h1 class="display">Programs</h1>
+      <p class="lede">What's running now, and what we're building next. Join a waitlist for any program that isn't open yet. It helps us decide what to launch first.</p>
+    </div>
+  </section>
+
+  <div class="filters" data-filters>
+    <div class="wrap">
+      <form class="filters-in" data-filter-form>
+        <fieldset class="segmented" aria-label="Who it's for">
+          {whoOptions.map(([value, label], i) => (
+            <label><input type="radio" name="who" value={value} checked={i === 0} /><span>{label}</span></label>
+          ))}
+        </fieldset>
+        <fieldset class="chips" aria-label="Activity">
+          {activities.map((a) => (
+            <label class="chip"><input type="checkbox" name="activity" value={a} /><span>{a}</span></label>
+          ))}
+        </fieldset>
+        <label class="switch"><input type="checkbox" name="open" value="1" role="switch" /> Registering now</label>
+        <input type="hidden" name="line" value="" />
+        <p class="filter-meta" aria-live="polite"><span data-count>{programs.length} programs</span><button type="reset" data-clear hidden>Clear filters</button></p>
+      </form>
+    </div>
+  </div>
+
+  <section class="wrap">
+    <div class="grid" data-grid>
+      {programs.map((p) => (
+        <article
+          class={`card tone-${p.line}`}
+          data-who={p.who.join(" ")}
+          data-activities={p.activities.join("|")}
+          data-status={p.status}
+          data-line={p.line}
+        >
+          <div class="card-top">
+            <span class="line">{lineName(p.line)}</span>
+            <Glyph line={p.line} />
+          </div>
+          <div class="card-body">
+            <h2 class="h3">{p.title}</h2>
+            <p>{p.summary}</p>
+            <dl class="card-meta">
+              <div><dt>For</dt><dd>{p.who.map((w) => whoLabels[w]).join(", ")}</dd></div>
+              <div data-verify={p.status === "open" ? p.verify : undefined}><dt>Where</dt><dd>{p.where.length ? p.where.join(", ") : "Across Durham Region"}</dd></div>
+              {p.facts.slice(0, p.status === "open" ? 3 : 1).map((f) => (
+                <div data-verify={f.verify}><dt>{f.label}</dt><dd>{f.value}</dd></div>
+              ))}
+            </dl>
+            <div class="card-foot">
+              <span class:list={["status", { open: p.status === "open" }]}>{p.status === "open" ? "Registering now" : "Gauging interest"}</span>
+              {p.status === "open" ? (
+                <a class="btn btn-primary btn-sm" href={p.href}>Details</a>
+              ) : (
+                <button class="btn btn-quiet btn-sm" type="button" data-interest={p.id}>Join waitlist<span class="visually-hidden"> for {p.title}</span></button>
+              )}
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <div class="empty" data-empty hidden>
+      <h2 class="h3">Nothing matches yet.</h2>
+      <p>We don't run that combination yet. Tell us what you'd like to play and where, and we'll count you in.</p>
+      <button class="btn btn-primary" type="button" data-interest="other">Suggest a program</button>
+    </div>
+  </section>
+
+  <script>
+    import "../../scripts/programs.ts";
+  </script>
+</Layout>

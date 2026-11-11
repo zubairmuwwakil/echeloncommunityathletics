@@ -1,0 +1,109 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Glyph from "../../components/Glyph.astro";
+import { programs, site } from "../../data/site";
+
+const p = programs.find((x) => x.id === "pickleball-learn")!;
+const faqs: { q: string; a: string; verify?: string }[] = [
+  {
+    q: "I've never played. Is this for me?",
+    a: "Yes. That's who it's designed for. The first hour covers the basics step by step, and the games afterwards are grouped so everyone gets good rallies.",
+  },
+  {
+    q: "What should I bring?",
+    a: "Comfortable clothes, clean indoor court shoes and a water bottle. If you own a paddle, bring it.",
+    verify: "Confirm whether loaner paddles and balls are provided, and add that here.",
+  },
+  {
+    q: "Can I sign up with a friend or partner?",
+    a: "Of course. Each person registers separately, and you're welcome to play together on the night.",
+  },
+  {
+    q: "What if I have to miss a week?",
+    a: "Let the organizer know through PB Social. Refund and make-up details are shown when you register.",
+    verify: "State the actual refund and missed-session policy for the current season.",
+  },
+];
+---
+<Layout title="Learn-to-play pickleball" description="An hour of coaching, then an hour of real games. Five-week learn-to-play pickleball programs in school gyms across Durham Region.">
+  <section class="page-head">
+    <div class="wrap">
+      <div class="detail-hero tone-pickleball">
+        <Glyph line="pickleball" />
+        <span class="status open">Registering now</span>
+        <h1 class="display mt">{p.title}</h1>
+        <p class="lede">{p.summary}</p>
+        <div class="feature-actions">
+          <a class="btn btn-primary" href={site.registerUrl} data-verify={site.registerVerify}>Register on PB Social ↗</a>
+          <a class="more" href="#details">Dates, places and price</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight reveal">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="kicker">Each session</p>
+        <h2 class="h2">Two hours. One for learning, one for playing.</h2>
+      </div>
+      <div class="agenda">
+        <div>
+          <p class="time">Hour one</p>
+          <h3>Coaching</h3>
+          <p data-verify="Confirm every learn-to-play coach holds current Pickleball Canada certification.">A Pickleball Canada certified coach takes you through one skill at a time: the serve, the return, the soft game at the net, and where to stand.</p>
+        </div>
+        <div>
+          <p class="time">Hour two</p>
+          <h3>Match play</h3>
+          <p>Put it straight into real games with people at your level. Same group each week, so it starts to feel like a club.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight reveal" id="details">
+    <div class="wrap split">
+      <div>
+        <p class="kicker">The details</p>
+        <h2 class="h2">Know before you go.</h2>
+        <p class="lede mt">Exact dates and times for each town are listed on the registration page.</p>
+      </div>
+      <dl class="facts">
+        {p.facts.map((f) => (
+          <div data-verify={f.verify}><dt>{f.label}</dt><dd>{f.value}</dd></div>
+        ))}
+        <div class="wide" data-verify={p.verify}><dt>Where</dt><dd>{p.where.join(", ")}</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="section reveal">
+    <div class="wrap split">
+      <div>
+        <p class="kicker">Questions</p>
+        <h2 class="h2">Good to know.</h2>
+      </div>
+      <div class="faq">
+        {faqs.map((f) => (
+          <details>
+            <summary>{f.q}</summary>
+            <p data-verify={f.verify}>{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight reveal">
+    <div class="wrap">
+      <div class="band">
+        <h2 class="h2">Ready for your first game?</h2>
+        <p class="lede">Registration and payment are handled by PB Social, a separate company we use for sign-ups.</p>
+        <div class="feature-actions">
+          <a class="btn btn-quiet" href={site.registerUrl}>Register on PB Social ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

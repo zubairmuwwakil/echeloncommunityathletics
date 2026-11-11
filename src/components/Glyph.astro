@@ -1,0 +1,43 @@
+---
+import type { LineId } from "../data/site";
+interface Props { line: LineId; class?: string }
+const { line, class: cls = "glyph" } = Astro.props;
+---
+<svg class={cls} viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+  {line === "pickleball" && (
+    <Fragment>
+      <g transform="rotate(-32 26 20)">
+        <rect x="16" y="4" width="20" height="22" rx="7" />
+        <path d="M26 26v12" stroke-width="5.5" />
+      </g>
+      <circle cx="12" cy="36" r="6" />
+      <circle cx="10.2" cy="34.6" r="0.95" fill="currentColor" stroke="none" />
+      <circle cx="14" cy="35.2" r="0.95" fill="currentColor" stroke="none" />
+      <circle cx="11.8" cy="38.6" r="0.95" fill="currentColor" stroke="none" />
+    </Fragment>
+  )}
+  {line === "youth" && (
+    <Fragment>
+      <circle cx="24" cy="24" r="8" />
+      <path d="M24 5v5M24 38v5M5 24h5M38 24h5M10.6 10.6l3.5 3.5M33.9 33.9l3.5 3.5M10.6 37.4l3.5-3.5M33.9 14.1l3.5-3.5" />
+    </Fragment>
+  )}
+  {line === "active" && (
+    <Fragment>
+      <path d="M24 39.5C14 33 7.5 27 7.5 19.2a8.2 8.2 0 0 1 16.5-2.4 8.2 8.2 0 0 1 16.5 2.4C40.5 27 34 33 24 39.5z" />
+      <path d="M13.5 25h6l2.5-4.5 4 9 2.5-4.5h6" />
+    </Fragment>
+  )}
+  {line === "leagues" && (
+    <Fragment>
+      <circle cx="24" cy="24" r="16" />
+      <path d="M24 24c0-7.5-3.8-12.8-9.6-14.7M24 24c6.4-3.9 12.9-3.6 15.6.6M24 24c-3.8 6.6-3.2 12.6.6 15.6" />
+    </Fragment>
+  )}
+  {line === "events" && (
+    <Fragment>
+      <path d="M16 8h16v10a8 8 0 0 1-16 0z" />
+      <path d="M16 12h-3.5a4.5 4.5 0 0 0 4.4 6.6M32 12h3.5a4.5 4.5 0 0 1-4.4 6.6M24 26v7M18 40h12M20 33h8v7h-8z" />
+    </Fragment>
+  )}
+</svg>

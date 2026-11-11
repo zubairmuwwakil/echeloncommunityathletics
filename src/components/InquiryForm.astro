@@ -1,0 +1,123 @@
+---
+import { programs, towns, site } from "../data/site";
+
+interface Props {
+  kind: "interest" | "partner" | "contact";
+  id: string;
+  partnerType?: string;
+}
+const { kind, id, partnerType } = Astro.props;
+const interestPrograms = programs.filter((p) => p.status === "interest");
+const partnerTypes = [
+  "School or school board",
+  "Municipality or community centre",
+  "Retirement or seniors' residence",
+  "Workplace or team event",
+  "Sponsor",
+  "Foundation or grant funder",
+  "Giving to the Play Fund",
+  "Something else",
+];
+const submitLabel = { interest: "Keep me posted", partner: "Send inquiry", contact: "Send message" }[kind];
+const done = {
+  interest: ["You're on the list.", "We'll email you when this program has dates. One email, no spam."],
+  partner: ["Thanks. We'll be in touch.", "Someone from Echelon will reply within a few business days."],
+  contact: ["Message sent.", "We'll reply by email, usually within a few business days."],
+}[kind];
+---
+<form class="form" data-inquiry data-kind={kind} novalidate>
+  {kind === "interest" && (
+    <label class="field">
+      <span>Program</span>
+      <select class="input" name="program" id={`${id}-program`} required>
+        {interestPrograms.map((p) => <option value={p.id}>{p.title}</option>)}
+        <option value="other">Something else</option>
+      </select>
+    </label>
+  )}
+
+  {kind === "partner" && (
+    <label class="field">
+      <span>I'm reaching out about</span>
+      <select class="input" name="partnerType" required>
+        {partnerTypes.map((t) => <option selected={t === partnerType}>{t}</option>)}
+      </select>
+    </label>
+  )}
+
+  <div class="two">
+    <label class="field">
+      <span>{kind === "interest" ? "First name" : "Name"}</span>
+      <input class="input" name="name" autocomplete={kind === "interest" ? "given-name" : "name"} required maxlength="80" />
+    </label>
+    <label class="field">
+      <span>Email</span>
+      <input class="input" name="email" type="email" autocomplete="email" inputmode="email" required maxlength="160" />
+    </label>
+  </div>
+
+  {kind === "partner" && (
+    <div class="two">
+      <label class="field">
+        <span>Organization</span>
+        <input class="input" name="organization" autocomplete="organization" required maxlength="120" />
+      </label>
+      <label class="field">
+        <span>Phone <span class="hint">(optional)</span></span>
+        <input class="input" name="phone" type="tel" autocomplete="tel" maxlength="40" />
+      </label>
+    </div>
+  )}
+
+  {kind === "interest" && (
+    <Fragment>
+      <label class="field">
+        <span>Closest town</span>
+        <select class="input" name="town" required>
+          <option value="" disabled selected>Choose a town</option>
+          {towns.map((t) => <option>{t}</option>)}
+          <option>Somewhere else</option>
+        </select>
+      </label>
+      <fieldset class="field">
+        <legend>Who's it for?</legend>
+        <div class="segmented">
+          <label><input type="radio" name="for" value="Me" checked /><span>Me</span></label>
+          <label><input type="radio" name="for" value="My child" /><span>My child</span></label>
+          <label><input type="radio" name="for" value="Family" /><span>Family</span></label>
+        </div>
+      </fieldset>
+    </Fragment>
+  )}
+
+  {kind !== "interest" && (
+    <label class="field">
+      <span>{kind === "partner" ? "What do you have in mind?" : "Message"}</span>
+      <textarea class="input" name="message" required maxlength="3000" rows="5"></textarea>
+    </label>
+  )}
+
+  <label class="check">
+    <input type="checkbox" name="consent" value="yes" required />
+    <span>
+      {kind === "interest"
+        ? "Email me about this program. I can unsubscribe at any time."
+        : "Echelon can use these details to reply to me."}{" "}
+      <a href="/privacy/">Privacy</a>
+    </span>
+  </label>
+
+  <div class="hp" aria-hidden="true">
+    <label>Leave this empty <input name="website" tabindex="-1" autocomplete="off" /></label>
+  </div>
+
+  <p class="form-status" role="status" aria-live="polite"></p>
+  <div><button class="btn btn-primary" type="submit">{submitLabel}</button></div>
+
+  <div class="form-done" tabindex="-1">
+    <svg viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="28" cy="28" r="25" /><path d="M17 29l7 7 15-16" /></svg>
+    <h3>{done[0]}</h3>
+    <p>{done[1]}</p>
+  </div>
+  <input type="hidden" name="fallback" value={site.email} disabled />
+</form>

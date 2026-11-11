@@ -1,0 +1,17 @@
+---
+/** Five stepped bars: the five program lines in "echelon" formation. */
+interface Props { colored?: boolean; class?: string }
+const { colored = false, class: cls = "brand-mark" } = Astro.props;
+const bars = [
+  { x: 0, h: 10, c: "var(--pickleball)" },
+  { x: 6.5, h: 14, c: "var(--youth)" },
+  { x: 13, h: 18, c: "var(--active)" },
+  { x: 19.5, h: 22, c: "var(--leagues)" },
+  { x: 26, h: 26, c: "var(--events)" },
+];
+---
+<svg class={cls} viewBox="0 0 30 26" aria-hidden="true" focusable="false">
+  {bars.map((b) => (
+    <rect x={b.x} y={26 - b.h} width="4" height={b.h} rx="2" fill={colored ? b.c : "currentColor"} />
+  ))}
+</svg>

@@ -1,0 +1,99 @@
+---
+import Layout from "../layouts/Layout.astro";
+import InquiryForm from "../components/InquiryForm.astro";
+import { site } from "../data/site";
+
+const ways = [
+  {
+    id: "play-fund",
+    title: "Give to the Play Fund",
+    body: "Covers program fees for kids, families and older adults who couldn't otherwise join. Every dollar goes to subsidized spots.",
+    cta: "Talk to us about giving",
+    type: "Giving to the Play Fund",
+  },
+  {
+    id: "sponsors",
+    title: "Sponsor a program",
+    body: "Put your business behind a season, a location or an event. Your name on the program, the court and our site.",
+    cta: "Become a sponsor",
+    type: "Sponsor",
+  },
+  {
+    id: "funders",
+    title: "Fund our growth",
+    body: "Foundations, governments and corporate funders: help us open new sites and start youth and 55+ programs. We'll report on what your funding achieves.",
+    cta: "Start a funding conversation",
+    type: "Foundation or grant funder",
+  },
+  {
+    id: "volunteer",
+    title: "Coach or volunteer",
+    body: "Coaches, organizers and people with skills in finance, fundraising or governance. Time is a gift too.",
+    cta: "Get involved",
+    type: "Something else",
+  },
+];
+
+const measures = [
+  ["People reached", "How many people play, and how many come back for a second season."],
+  ["Who we're reaching", "Age groups, first-time players, and how many spots the Play Fund covered."],
+  ["Where we play", "The communities and venues we serve, and new ones we open."],
+  ["Where the money goes", "Program fees, sponsorship and grants in; venues, coaching, equipment and subsidies out."],
+];
+---
+<Layout title="Support us" description="Give to the Play Fund, sponsor a program or fund Echelon's growth. Help make sport and recreation open to everyone in Canada.">
+  <section class="page-head">
+    <div class="wrap">
+      <p class="kicker">Support us</p>
+      <h1 class="display mt">Help more people play.</h1>
+      <p class="lede">The hardest part of sport is often getting in the door. Your support pays for the spots, the coaches and the gym time that let someone take that first step, and keep coming back.</p>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <div class="trust partner-grid ways">
+      {ways.map((w) => (
+        <div id={w.id}>
+          <h2 class="h3">{w.title}</h2>
+          <p>{w.body}</p>
+          <a class="more mt-sm" href={`#start`} data-partner-type={w.type}>{w.cta}</a>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="section reveal">
+    <div class="wrap split">
+      <div>
+        <p class="kicker">Accountability</p>
+        <h2 class="h2">You'll see what your support does.</h2>
+        <p class="lede mt">We'll publish a short report every year, starting after our first full year of programs. Real numbers only, never estimates dressed up as results.</p>
+      </div>
+      <dl class="ledger" data-verify="A commitment. Only keep it if you'll publish the report; funders will hold you to it.">
+        {measures.map(([t, d]) => <div><dt>{t}</dt><dd>{d}</dd></div>)}
+      </dl>
+    </div>
+  </section>
+
+  <section class="section-tight reveal">
+    <div class="wrap">
+      <div class="note-card">
+        <h3>Good to know before you give</h3>
+        <p>{site.legalName} is a federally incorporated not-for-profit (no. {site.corporationNumber}), not a registered charity. We can't issue charitable tax receipts. Sponsors receive public recognition instead, and businesses can usually treat sponsorship as a marketing expense; check with your accountant.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section reveal" id="start">
+    <div class="wrap split">
+      <div>
+        <p class="kicker">Start here</p>
+        <h2 class="h2">Let's talk.</h2>
+        <p class="lede mt">Tell us how you'd like to help. We'll reply personally within a few business days.</p>
+      </div>
+      <div class="panel">
+        <InquiryForm kind="partner" id="support" partnerType="Giving to the Play Fund" />
+      </div>
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,33 @@
+---
+import Layout from "../layouts/Layout.astro";
+import InquiryForm from "../components/InquiryForm.astro";
+import { site } from "../data/site";
+---
+<Layout title="Contact" description="Questions about a program, coaching, volunteering or partnering with Echelon Community Athletics? Send us a message.">
+  <section class="page-head">
+    <div class="wrap">
+      <h1 class="display">Say hello.</h1>
+      <p class="lede">Questions about a program, coaching, volunteering or something else. We read everything.</p>
+    </div>
+  </section>
+
+  <section class="wrap split">
+    <div class="panel">
+      <InquiryForm kind="contact" id="contact" />
+    </div>
+    <div class="contact-side">
+      <div class="note-card">
+        <h2>Email</h2>
+        <p><a href={`mailto:${site.email}`} data-verify={site.emailVerify}>{site.email}</a></p>
+      </div>
+      <div class="note-card">
+        <h2>Already registered?</h2>
+        <p>For changes to an existing registration or payment, use the contact option on your PB Social registration so it reaches the right organizer quickly.</p>
+      </div>
+      <div class="note-card">
+        <h2>Partnerships</h2>
+        <p>Schools, municipalities, residences, workplaces and sponsors: <a href="/partner/">use the partner form</a> and tell us a bit about your organization.</p>
+      </div>
+    </div>
+  </section>
+</Layout>
