@@ -45,6 +45,23 @@ npm test           # form handler tests
 2. `npx wrangler login`, then `npm run deploy`. Or connect this GitHub repo in the Cloudflare dashboard (Workers → Import a repository, build command `npm run build`) so every push to `main` deploys.
 3. Add `echeloncommunity.ca` and `www.echeloncommunity.ca` as custom domains on the Worker.
 
+## Automatic production deployment
+
+Every push to `main` runs `.github/workflows/deploy-cloudflare.yml`, which:
+
+1. Installs dependencies, runs the form handler tests, and builds the Astro site.
+2. Checks the generated sitemap, robots.txt, and indexable home page.
+3. Uses Wrangler to deploy the static site and Worker configured in `wrangler.jsonc`.
+
+**Required one-time setup:** in GitHub repository Settings → Secrets and variables → Actions, or in its `production` environment, configure:
+
+- `CLOUDFLARE_API_TOKEN` — a scoped Cloudflare token with permission to edit Workers scripts/routes for the nonprofit Cloudflare account.
+- `CLOUDFLARE_ACCOUNT_ID` — that account's ID (not a secret token; kept in secrets for consistent configuration).
+
+In Cloudflare, associate the `echelon-site` Worker with `echeloncommunity.ca` (and `www` if desired) as custom domains, using the **nonprofit-owned** account. Deploying the Worker does not automatically provision a domain, an email inbox, or email delivery bindings.
+
+Review Actions → **Deploy Echelon website to Cloudflare** for success or clear missing-credential errors. You can also run it manually using **Run workflow**.
+
 ## Forms
 
 The waitlist, partner and contact forms post to `/api/inquiry`, which emails the submission to Echelon's inbox through Cloudflare's `send_email` binding. Nothing is stored in a database.
