@@ -26,17 +26,17 @@ npm test           # form handler tests
 
 ## Review mode
 
-`review: true` in `src/data/site.ts` shows a "Review draft" panel listing every statement that still needs confirming, outlines each one on the page, and adds `noindex`. Resolve every note, then set `review: false`.
+`review: false` in `src/data/site.ts` permits indexing and hides the draft review panel. The layout outputs a `robots=index,follow` tag. `public/robots.txt` allows crawling and points to `public/sitemap.xml`. To pause indexing again while reviewing copy, set `review: true`.
 
 ## Before publishing
 
-- [ ] Every review note resolved (including the founder story on /about/, written in your own words)
+- [x] Replace placeholder founder content with a factual public introduction; a personal first-person story can still be added later
 - [ ] Real photos of real programs, with permission from the people in them
 - [ ] `hello@echeloncommunity.ca` exists (Cloudflare Email Routing, free)
-- [ ] Registration links point to a **separate Echelon organization** on PB Social
+- [ ] Configure a **separate Echelon organization** on PB Social and replace the current contact-based inquiry links with that organization’s real registration URLs
 - [ ] Play Fund set up as its own line in Echelon's books before asking anyone to give to it
-- [ ] Statistics on the homepage re-checked against their sources
-- [ ] Privacy notice reviewed and dated
+- [x] Remove unverified numeric impact statements until reliable sources and dates are ready
+- [ ] Review the public privacy notice, confirm an actual data-retention policy, and record a formal policy effective date
 - [ ] Domain and Cloudflare account owned by Echelon, not a personal or Zemi account
 
 ## Hosting (recommended: Cloudflare Workers, free tier)
@@ -63,3 +63,12 @@ Spam protection is a honeypot field plus a minimum fill time. Add Cloudflare Tur
 - Don't publish participant counts, impact figures, sponsors, grants or testimonials unless they are verified.
 - Don't use nonprofit discounts or credits for any commercial product.
 - Internal and governance documents never go in this repository; it is public. `private/` is git-ignored.
+
+## Search indexing and connected identity
+
+- Indexable pages have canonical URLs under `https://echeloncommunity.ca` and `robots=index,follow` when `review: false`.
+- The sitemap is at `https://echeloncommunity.ca/sitemap.xml`; `robots.txt` references it.
+- The About page and footer identify **Zubair Muwwakil** and link to the personal engineering portfolio.
+- Links to **Zemi Echelon** and **PB Social** clarify connected people and software; neither is owned by this nonprofit, and the nonprofit is not a commercial subsidiary.
+- Submit this sitemap to Google Search Console **only after the custom domain is serving the current build**; indexing is permitted, not guaranteed.
+- Confirm Cloudflare deployment, the `hello@echeloncommunity.ca` mailbox, and the separate PB Social registration organization before promoting active registration links.
