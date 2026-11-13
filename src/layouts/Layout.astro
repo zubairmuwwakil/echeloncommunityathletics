@@ -45,7 +45,7 @@ const current = (href: string) => (path.startsWith(href) ? "page" : undefined);
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:locale" content="en_CA" />
-    {site.review && <meta name="robots" content="noindex" />}
+    <meta name="robots" content={site.review ? "noindex,nofollow" : "index,follow"} />
     {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
   </head>
   <body>
@@ -114,6 +114,11 @@ const current = (href: string) => (path.startsWith(href) ? "page" : undefined);
             </ul>
           </div>
         </div>
+        <p class="footer-connections">
+          Founded by <a href="https://zubairmuwwakil.com/">Zubair Muwwakil</a>.
+          Echelon Community Athletics is a separate nonprofit from
+          <a href="https://zemiechelon.com/about/">Zemi Echelon's software business</a>.
+        </p>
         <div class="footer-legal">
           <span>© {new Date().getFullYear()} {site.legalName} · Corporation no. {site.corporationNumber}</span>
           <span>Federally incorporated not-for-profit. Not a registered charity.</span>

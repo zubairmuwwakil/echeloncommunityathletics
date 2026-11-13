@@ -8,11 +8,6 @@ const ledger: { label: string; value: string; verify?: string }[] = [
   { label: "Corporation no.", value: site.corporationNumber },
   { label: "Tax status", value: "Not-for-profit. Not a registered charity, so we can't issue charitable tax receipts." },
   { label: "Programs today", value: site.region },
-  {
-    label: "Sport affiliation",
-    value: "Affiliate club of Pickleball Ontario",
-    verify: "The affiliation was signed as “Echelon Pickleball Club” with three directors; Corporations Canada lists one. Update Pickleball Ontario before claiming it.",
-  },
   { label: "Registration", value: "PB Social, a separate company's software we use for sign-ups and payments" },
 ];
 ---
@@ -43,12 +38,11 @@ const ledger: { label: string; value: string; verify?: string }[] = [
         <p class="kicker">From our founder</p>
         <h2 class="h2">Why I started Echelon.</h2>
       </div>
-      <figure class="founder" data-verify="Write this yourself, in your own voice. A true story told plainly moves funders far more than polished copy. Add a real photo of you at a program, with permission from anyone else in it.">
-        <blockquote>
-          <p>[Your words, 150 to 250 of them. What did you see in your community that made you start Echelon? A moment, a person, a gap that bothered you. Why sport? What do you want Echelon to mean to someone walking into their first session?]</p>
-        </blockquote>
-        <figcaption>[Your name], Founder</figcaption>
-      </figure>
+      <div class="founder">
+        <h3>Zubair Muwwakil · Founder</h3>
+        <p>Echelon Community Athletics was founded to create more welcoming and organized ways to participate in recreational sport. The nonprofit begins with community pickleball programs in Durham Region and is exploring more ways to support different ages and abilities.</p>
+        <p class="mt">Zubair also builds software products. His <a href="https://zubairmuwwakil.com/">engineering portfolio</a> describes that work separately from Echelon's nonprofit programs.</p>
+      </div>
     </div>
   </section>
 
@@ -97,9 +91,9 @@ const ledger: { label: string; value: string; verify?: string }[] = [
 
   <section class="section-tight reveal">
     <div class="wrap split">
-      <div class="note-card" data-verify="These are commitments from the draft PB Social terms. Publish this only once Echelon has accepted those terms and the conflict disclosure is on record.">
-        <h3>Relationship disclosure</h3>
-        <p>Echelon's founding director also develops PB Social, the registration software Echelon uses. Echelon and PB Social are separate. Echelon uses PB Social only on terms that are the same as any other community organization's, and its participant information is never used to market other products without separate consent.</p>
+      <div class="note-card">
+        <h3>Separate organizations, clear roles</h3>
+        <p>Echelon Community Athletics Inc. is an independent nonprofit, not a subsidiary of <a href="https://zemiechelon.com/about/">Zemi Echelon</a>. Our founder also works on software, including <a href="https://www.pbsocial.ca/">PB Social</a>, which provides registration technology. Each organization has a separate purpose and its own responsibilities.</p>
       </div>
       <div class="note-card">
         <h3>Get involved</h3>

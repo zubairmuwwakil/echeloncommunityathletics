@@ -7,7 +7,7 @@
  */
 
 export const site = {
-  review: true,
+  review: false,
   name: "Echelon Community Athletics",
   legalName: "Echelon Community Athletics Inc.",
   url: "https://echeloncommunity.ca",
@@ -19,9 +19,9 @@ export const site = {
   vision: "A place to play for everyone, in every community we reach.",
   mission:
     "Echelon Community Athletics Inc. promotes physical health, active living, and community connection through accessible recreational sports programs.",
-  registerUrl: "https://www.pbsocial.ca/zubairs-leagues/schedule",
+  registerUrl: "/contact/",
   registerVerify:
-    "Create a separate Echelon organization on PB Social and point this link at it. Don't rename “Zubair's Leagues”: it is the default org every PB Social user joins.",
+    "Connect a dedicated Echelon PB Social registration page after its organization and payment setup are verified. Until then, direct inquiries to Echelon contact.",
 };
 
 export type Who = "kids" | "adults" | "older";
@@ -97,8 +97,8 @@ export const programs: Program[] = [
     where: PICKLEBALL_TOWNS,
     facts: [
       { label: "Format", value: "1 hr coaching + 1 hr games" },
-      { label: "Length", value: "5 weekly sessions", verify: "Taken from the posters. Confirm for the current season." },
-      { label: "Price", value: "$135", verify: "Taken from the posters. Confirm, and whether HST applies once Echelon registers." },
+      { label: "Length", value: "See current program details" },
+      { label: "Price", value: "Ask about current pricing" },
       { label: "Venue", value: "School gymnasiums" },
     ],
     href: "/programs/pickleball/",

@@ -25,16 +25,16 @@ const faqs: { q: string; a: string; verify?: string }[] = [
   },
 ];
 ---
-<Layout title="Learn-to-play pickleball" description="An hour of coaching, then an hour of real games. Five-week learn-to-play pickleball programs in school gyms across Durham Region.">
+<Layout title="Learn-to-play pickleball" description="Learn-to-play pickleball in Durham Region, Ontario: beginner-friendly coaching, recreational games and ways to get involved.">
   <section class="page-head">
     <div class="wrap">
       <div class="detail-hero tone-pickleball">
         <Glyph line="pickleball" />
-        <span class="status open">Registering now</span>
+        <span class="status open">Program information</span>
         <h1 class="display mt">{p.title}</h1>
         <p class="lede">{p.summary}</p>
         <div class="feature-actions">
-          <a class="btn btn-primary" href={site.registerUrl} data-verify={site.registerVerify}>Register on PB Social ↗</a>
+          <a class="btn btn-primary" href={site.registerUrl} data-verify={site.registerVerify}>Ask about upcoming sessions</a>
           <a class="more" href="#details">Dates, places and price</a>
         </div>
       </div>
@@ -51,7 +51,7 @@ const faqs: { q: string; a: string; verify?: string }[] = [
         <div>
           <p class="time">Hour one</p>
           <h3>Coaching</h3>
-          <p data-verify="Confirm every learn-to-play coach holds current Pickleball Canada certification.">A Pickleball Canada certified coach takes you through one skill at a time: the serve, the return, the soft game at the net, and where to stand.</p>
+          <p>Coaching covers skills one step at a time: the serve, the return, the soft game at the net, and where to stand.</p>
         </div>
         <div>
           <p class="time">Hour two</p>
@@ -99,9 +99,9 @@ const faqs: { q: string; a: string; verify?: string }[] = [
     <div class="wrap">
       <div class="band">
         <h2 class="h2">Ready for your first game?</h2>
-        <p class="lede">Registration and payment are handled by PB Social, a separate company we use for sign-ups.</p>
+        <p class="lede">Contact us about upcoming sessions. Once Echelon registration is available, we will share the correct program link.</p>
         <div class="feature-actions">
-          <a class="btn btn-quiet" href={site.registerUrl}>Register on PB Social ↗</a>
+          <a class="btn btn-quiet" href={site.registerUrl}>Ask about upcoming sessions</a>
         </div>
       </div>
     </div>

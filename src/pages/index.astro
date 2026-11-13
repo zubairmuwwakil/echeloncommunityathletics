@@ -7,31 +7,6 @@ const featured = programs.find((p) => p.id === "pickleball-learn")!;
 const upcoming = programs.filter((p) => p.status === "interest");
 const where = featured.where;
 
-/* Every figure links to its source. Re-check each one before publishing. */
-const stats = [
-  {
-    num: "39%",
-    text: "of Canadian children and youth aged 5 to 17 get the 60 minutes of daily activity they need.",
-    source: "ParticipACTION Report Card, 2024",
-    href: "https://www.participaction.com/wp-content/uploads/2024/05/2024_Report_Card_Physical_Activity_Children_Youth_Press_Release.pdf",
-    verify: "Confirm against the source; replace with the 2026 Report Card figure if one has been released.",
-  },
-  {
-    num: "48%",
-    text: "of young Canadians who don't play sport say cost is the main reason.",
-    source: "Canadian Tire Jumpstart, State of Youth Sport 2025",
-    href: "https://jumpstart.canadiantire.ca/",
-    verify: "Found in a summary of Jumpstart's report. Confirm the figure and link the report itself before publishing.",
-  },
-  {
-    num: "1 in 11",
-    text: "Canadians aged 65 and over say they always or often feel lonely.",
-    source: "Statistics Canada, 2024",
-    href: "https://www.statcan.gc.ca/o1/en/plus/8956-look-moods-and-mental-health-older-canadians",
-    verify: "9.2% in Q4 2024, per a Statistics Canada article. Confirm on the source page.",
-  },
-];
-
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "SportsOrganization",
@@ -42,6 +17,11 @@ const jsonLd = {
   nonprofitStatus: "Nonprofit",
   areaServed: { "@type": "AdministrativeArea", name: "Durham Region, Ontario, Canada" },
   sport: ["Pickleball"],
+  founder: {
+    "@type": "Person",
+    name: "Zubair Muwwakil",
+    url: "https://zubairmuwwakil.com/",
+  },
 };
 ---
 <Layout jsonLd={jsonLd}>
@@ -66,7 +46,7 @@ const jsonLd = {
             <Glyph line={line.id} />
             <h2>{line.name}</h2>
             <p>{line.short}</p>
-            <span class:list={["status", { open: line.open }]}>{line.open ? "Registering now" : "Coming next"}</span>
+            <span class:list={["status", { open: line.open }]}>{line.open ? "Current focus" : "Being explored"}</span>
           </a>
         ))}
       </nav>
@@ -77,19 +57,22 @@ const jsonLd = {
     <div class="wrap">
       <div class="section-head">
         <p class="kicker">Why we exist</p>
-        <h2 class="h2">Too many people are sitting out.</h2>
-        <p class="lede">Sport is where kids build confidence, newcomers make friends and older adults stay connected. Yet cost, distance and not knowing where to start keep too many people on the sidelines. Echelon exists to remove those reasons, one community at a time.</p>
+        <h2 class="h2">An easier first step into sport.</h2>
+        <p class="lede">Cost, distance and not knowing where to start can keep people from joining recreational sports. Echelon is working to make organized play easier to find, more welcoming and closer to home.</p>
       </div>
-      <div class="stats">
-        {stats.map((st) => (
-          <figure class="stat" data-verify={st.verify}>
-            <p class="num">{st.num}</p>
-            <figcaption>
-              <p>{st.text}</p>
-              <a class="source" href={st.href} rel="noopener">{st.source}</a>
-            </figcaption>
-          </figure>
-        ))}
+      <div class="trust">
+        <div>
+          <h3>Start as a beginner</h3>
+          <p>Discover programs that explain the basics and make room for new players.</p>
+        </div>
+        <div>
+          <h3>Meet people locally</h3>
+          <p>Find recreational play and familiar faces in Durham Region communities.</p>
+        </div>
+        <div>
+          <h3>Keep moving together</h3>
+          <p>Build skill and confidence through coaching, games and regular activity.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -98,11 +81,11 @@ const jsonLd = {
     <div class="wrap">
       <article class="feature tone-pickleball">
         <div>
-          <span class="status open">Registering now</span>
+          <span class="status open">Current program focus</span>
           <h2 class="h2">{featured.title}</h2>
           <p class="lede">{featured.summary}</p>
           <div class="feature-actions">
-            <a class="btn btn-primary" href={site.registerUrl} data-verify={site.registerVerify}>Register on PB Social ↗</a>
+            <a class="btn btn-primary" href={site.registerUrl} data-verify={site.registerVerify}>Ask about upcoming sessions</a>
             <a class="more" href="/programs/pickleball/">How it works</a>
           </div>
         </div>
@@ -216,14 +199,14 @@ const jsonLd = {
 
   <section class="section reveal">
     <div class="wrap">
-      <div class="give" data-verify="The Play Fund doesn't exist yet. Set it up as a separate line in Echelon's books, used only for subsidized spots, before inviting money for it.">
+      <div class="give">
         <div>
-          <p class="kicker">The Play Fund</p>
-          <h2 class="h2">Every kid who wants to play should get to.</h2>
-          <p class="lede mt">The Play Fund covers program fees for kids, families and older adults who couldn't otherwise join. Sponsors, funders and neighbours make it possible.</p>
+          <p class="kicker">Making participation easier</p>
+          <h2 class="h2">Help create more opportunities to play.</h2>
+          <p class="lede mt">Echelon welcomes conversations with community partners, volunteers and supporters interested in expanding access to recreational sport. Any future funding program will be described after its structure and reporting are established.</p>
           <div class="feature-actions">
-            <a class="btn btn-primary" href="/support/">Support the Play Fund</a>
-            <a class="more" href="/support/#funders">For foundations and funders</a>
+            <a class="btn btn-primary" href="/support/">Ways to get involved</a>
+            <a class="more" href="/partner/">Explore partnerships</a>
           </div>
         </div>
         <div class="give-art" aria-hidden="true">

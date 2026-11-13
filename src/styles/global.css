@@ -978,3 +978,7 @@ button.more { border: 0; background: none; padding: 0; font: inherit; font-weigh
 :where(p, li, .check span) a:not(.btn, .more, .source):hover { text-decoration-color: currentColor; }
 .btn { white-space: nowrap; }
 @media (max-width: 860px) { .header-in { gap: 12px; } }
+
+/* Clear, low-key attribution that preserves the nonprofit's separate identity. */
+.footer-connections { margin-top: 28px; font-size: 13px; line-height: 1.6; color: var(--ink-2); }
+.footer-connections a { color: var(--link); text-decoration: underline; text-underline-offset: 3px; }
