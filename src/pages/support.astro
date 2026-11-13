@@ -6,10 +6,10 @@ import { site } from "../data/site";
 const ways = [
   {
     id: "play-fund",
-    title: "Give to the Play Fund",
-    body: "Covers program fees for kids, families and older adults who couldn't otherwise join. Every dollar goes to subsidized spots.",
-    cta: "Talk to us about giving",
-    type: "Giving to the Play Fund",
+    title: "Discuss access to play",
+    body: "We're exploring ways to help more people take part in recreational sport. Contact us if you would like to support a future access initiative.",
+    cta: "Ask about supporting access",
+    type: "Something else",
   },
   {
     id: "sponsors",
@@ -46,7 +46,7 @@ const measures = [
     <div class="wrap">
       <p class="kicker">Support us</p>
       <h1 class="display mt">Help more people play.</h1>
-      <p class="lede">The hardest part of sport is often getting in the door. Your support pays for the spots, the coaches and the gym time that let someone take that first step, and keep coming back.</p>
+      <p class="lede">The hardest part of sport is often getting in the door. We welcome conversations about sponsorship, volunteering and funding that could help more people participate.</p>
     </div>
   </section>
 
@@ -67,9 +67,9 @@ const measures = [
       <div>
         <p class="kicker">Accountability</p>
         <h2 class="h2">You'll see what your support does.</h2>
-        <p class="lede mt">We'll publish a short report every year, starting after our first full year of programs. Real numbers only, never estimates dressed up as results.</p>
+        <p class="lede mt">We intend to track participation, programs and funding as Echelon grows. We'll share verified results when reliable reporting is available.</p>
       </div>
-      <dl class="ledger" data-verify="A commitment. Only keep it if you'll publish the report; funders will hold you to it.">
+      <dl class="ledger">
         {measures.map(([t, d]) => <div><dt>{t}</dt><dd>{d}</dd></div>)}
       </dl>
     </div>
@@ -79,7 +79,7 @@ const measures = [
     <div class="wrap">
       <div class="note-card">
         <h3>Good to know before you give</h3>
-        <p>{site.legalName} is a federally incorporated not-for-profit (no. {site.corporationNumber}), not a registered charity. We can't issue charitable tax receipts. Sponsors receive public recognition instead, and businesses can usually treat sponsorship as a marketing expense; check with your accountant.</p>
+        <p>{site.legalName} is a federally incorporated not-for-profit (no. {site.corporationNumber}), not a registered charity. We can't issue charitable tax receipts. Sponsorship arrangements can be discussed separately. Ask a qualified tax professional for advice on the treatment of any payment.</p>
       </div>
     </div>
   </section>
@@ -92,7 +92,7 @@ const measures = [
         <p class="lede mt">Tell us how you'd like to help. We'll reply personally within a few business days.</p>
       </div>
       <div class="panel">
-        <InquiryForm kind="partner" id="support" partnerType="Giving to the Play Fund" />
+        <InquiryForm kind="partner" id="support" partnerType="Something else" />
       </div>
     </div>
   </section>
