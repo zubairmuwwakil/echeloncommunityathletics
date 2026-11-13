@@ -1,0 +1,45 @@
+name: Verify nonprofit website
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Test form handler
+        run: npm test
+      - name: Build Astro site
+        run: npm run build
+      - name: Check publicly indexable pages
+        run: |
+          set -eu
+          test -s dist/index.html
+          test -s dist/about/index.html
+          test -s dist/programs/pickleball/index.html
+          test -s dist/sitemap.xml
+          test -s dist/robots.txt
+          grep -q 'index,follow' dist/index.html
+          grep -q 'index,follow' dist/about/index.html
+          grep -q 'https://echeloncommunity.ca/sitemap.xml' dist/robots.txt
+          grep -q 'https://zubairmuwwakil.com/' dist/about/index.html
+          grep -q 'https://zemiechelon.com/about/' dist/about/index.html
+          if grep -ERi 'content="noindex|\[Your words\]|\[Your name\]|\[date of publication\]' dist --include='*.html'; then
+            echo 'Draft content or noindex found in published HTML' >&2
+            exit 1
+          fi
