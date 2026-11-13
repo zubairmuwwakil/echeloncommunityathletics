@@ -1,0 +1,54 @@
+name: Deploy Echelon website to Cloudflare
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Do not allow two production deployments to race.
+concurrency:
+  group: echelon-cloudflare-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Build and deploy to Cloudflare Workers
+    runs-on: ubuntu-latest
+    environment: production
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Test inquiry handler
+        run: npm test
+      - name: Build static Astro website
+        run: npm run build
+      - name: Verify generated SEO output
+        run: |
+          set -eu
+          test -s dist/index.html
+          test -s dist/about/index.html
+          test -s dist/sitemap.xml
+          test -s dist/robots.txt
+          grep -q 'index,follow' dist/index.html
+          grep -q 'https://echeloncommunity.ca/sitemap.xml' dist/robots.txt
+      - name: Check Cloudflare credentials
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ] || [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
+            echo "::error::Set CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID as repository or production environment secrets."
+            exit 1
+          fi
+      - name: Publish site and Worker to Cloudflare
+        run: npx wrangler deploy --config wrangler.jsonc
