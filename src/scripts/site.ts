@@ -83,10 +83,20 @@ function showError(form: HTMLFormElement, message: string, withEmail = false) {
   status.textContent = message;
   if (withEmail) {
     const email = form.querySelector<HTMLInputElement>("input[name=fallback]")?.value ?? "";
+    const labels: Record<string, string> = {
+      program: "Program", town: "Town", for: "For", partnerType: "About",
+      name: "Name", email: "Email", organization: "Organization",
+      phone: "Phone", message: "Message",
+    };
+    const details = [...new FormData(form).entries()]
+      .filter(([key, value]) => key in labels && String(value).trim())
+      .map(([key, value]) => `${labels[key]}: ${String(value).trim()}`)
+      .join("\n");
+    const subject = `Echelon ${form.dataset.kind ?? "website"} inquiry`;
     const link = document.createElement("a");
-    link.href = `mailto:${email}`;
+    link.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(details)}`;
     link.textContent = email;
-    status.append(" Email us at ", link, " instead.");
+    status.append(" Open an email with your details addressed to ", link, " instead.");
   }
 }
 
