@@ -64,13 +64,14 @@ Review Actions → **Deploy Echelon website to Cloudflare** for success or clear
 
 ## Forms
 
-The waitlist, partner and contact forms post to `/api/inquiry`, which emails the submission to Echelon's inbox through Resend. Nothing is stored in a database on this site. Resend processes the inquiry for delivery.
+The waitlist, partner and contact forms post to `/api/inquiry`. A Cloudflare Worker validates each submission and passes it to an Echelon-owned Google Apps Script that emails `zubair@echeloncommunity.ca`. Nothing is stored in a database on this site.
 
 Until email is configured, the endpoint answers `503` and the page offers a mailto link populated with the visitor's form details. To turn on direct delivery:
 
-1. Use a separate Echelon Resend account and verify `echeloncommunity.ca` for **sending only**. Keep the existing Google Workspace MX records at the zone apex; Resend's sending return-path records use a subdomain.
-2. In the Cloudflare `echelon-site` Worker, set `MAIL_TO` to the Echelon receiving inbox and `RESEND_API_KEY` to a send-only Resend key. Both are Worker secrets, never values in this public repository.
-3. Deploy, then submit a test from each form and verify that the messages reach the inbox. Check that the public `hello@echeloncommunity.ca` address also receives mail.
+1. Under `zubair@echeloncommunity.ca`, create a Google Apps Script project with the code in `google-apps-script/Code.gs`. Add a random 32-byte or longer `INQUIRY_SIGNING_KEY` in Project Settings → Script properties. Keep that value out of this repository.
+2. Deploy the script as a web app, **execute as me**, accessible to **anyone**. The script accepts only recent requests carrying a valid signature and sends only to the hardcoded Echelon inbox. Authorize Google's `script.send_mail` permission when prompted; it cannot read the inbox.
+3. In Cloudflare's `echelon-site` Worker, set `GOOGLE_SCRIPT_URL` to the web app's `/exec` URL and `INQUIRY_SIGNING_KEY` to the same value as Worker secrets. Deploy the Worker.
+4. Submit a test from each form and verify that the messages reach Gmail. Check that the public `hello@echeloncommunity.ca` address also receives mail.
 
 Spam protection is a honeypot field plus a minimum fill time. Add Cloudflare Turnstile if spam gets through.
 

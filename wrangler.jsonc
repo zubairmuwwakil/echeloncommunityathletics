@@ -14,8 +14,7 @@
   },
   "routes": [{ "pattern": "echeloncommunity.ca", "custom_domain": true }],
   "vars": {
-    "SITE_ORIGIN": "https://echeloncommunity.ca",
-    "MAIL_FROM": "website@echeloncommunity.ca"
+    "SITE_ORIGIN": "https://echeloncommunity.ca"
   }
-  // Set MAIL_TO and RESEND_API_KEY as Worker secrets; see README, "Forms".
+  // Set GOOGLE_SCRIPT_URL and INQUIRY_SIGNING_KEY as Worker secrets; see README, "Forms".
 }

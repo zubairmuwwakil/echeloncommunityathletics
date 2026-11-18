@@ -2,7 +2,7 @@
  * POST /api/inquiry: validates a website form and emails it to Echelon's inbox.
  *
  * Pure function of (request, env, send) so it can be tested in Node. `send(email)`
- * delivers a validated inquiry through the configured mail provider.
+ * delivers a validated inquiry through Echelon's Google Workspace script.
  */
 
 const KINDS = new Set(["interest", "partner", "contact"]);
@@ -80,11 +80,9 @@ export function compose({ kind, values }, env, now = new Date()) {
   lines.push("", `Consent: yes, via the ${kind} form on ${now.toISOString()}`, "Reply to this email to answer them directly.");
 
   return {
-    from: `Echelon website <${env.MAIL_FROM}>`,
-    to: [env.MAIL_TO],
-    reply_to: values.email,
+    replyTo: values.email,
     subject: subjects[kind],
-    text: `${lines.join("\n")}\n`,
+    body: `${lines.join("\n")}\n`,
   };
 }
 
@@ -111,7 +109,7 @@ export async function handleInquiry(request, env, send) {
   const result = validate(input);
   if (result.error) return json(422, result);
 
-  if (!send || !env.MAIL_FROM || !env.MAIL_TO) return json(503, { error: "not_configured" });
+  if (!send) return json(503, { error: "not_configured" });
 
   try {
     await send(compose(result, env));

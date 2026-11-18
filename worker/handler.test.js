@@ -3,8 +3,6 @@ import assert from "node:assert/strict";
 import { handleInquiry, validate } from "./handler.js";
 
 const env = {
-  MAIL_FROM: "website@echeloncommunity.ca",
-  MAIL_TO: "inbox@example.org",
   SITE_ORIGIN: "https://echeloncommunity.ca",
 };
 
@@ -36,11 +34,9 @@ test("sends a valid waitlist signup with the visitor as Reply-To", async () => {
   const res = await handleInquiry(post(interest), env, send);
   assert.equal(res.status, 200);
   assert.equal(sent.length, 1);
-  assert.equal(sent[0].from, "Echelon website <website@echeloncommunity.ca>");
-  assert.deepEqual(sent[0].to, ["inbox@example.org"]);
-  assert.equal(sent[0].reply_to, "ama@example.com");
+  assert.equal(sent[0].replyTo, "ama@example.com");
   assert.equal(sent[0].subject, "Waitlist: youth-camps (Whitby)");
-  assert.match(sent[0].text, /For: My child/);
+  assert.match(sent[0].body, /For: My child/);
 });
 
 test("a header injection attempt cannot add headers", async () => {
@@ -48,9 +44,9 @@ test("a header injection attempt cannot add headers", async () => {
   const res = await handleInquiry(post({ ...interest, name: "Eve\r\nBcc: victim@example.com", town: "Ajax\nX: y" }), env, send);
   assert.equal(res.status, 200);
   assert.equal(sent[0].subject, "Waitlist: youth-camps (Ajax X: y)");
-  assert.match(sent[0].text, /Name: Eve Bcc: victim@example.com/);
-  assert.doesNotMatch(sent[0].text, /^Bcc:/m);
-  assert.doesNotMatch(sent[0].text, /^X: y/m);
+  assert.match(sent[0].body, /Name: Eve Bcc: victim@example.com/);
+  assert.doesNotMatch(sent[0].body, /^Bcc:/m);
+  assert.doesNotMatch(sent[0].body, /^X: y/m);
 });
 
 test("rejects an email address carrying a newline", () => {

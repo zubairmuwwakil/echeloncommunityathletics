@@ -9,8 +9,8 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     if (url.pathname === "/api/inquiry") {
-      const send = env.RESEND_API_KEY
-        ? (email) => sendInquiry(email, env.RESEND_API_KEY)
+      const send = env.GOOGLE_SCRIPT_URL && env.INQUIRY_SIGNING_KEY
+        ? (email) => sendInquiry(email, env.GOOGLE_SCRIPT_URL, env.INQUIRY_SIGNING_KEY)
         : null;
       return handleInquiry(request, env, send);
     }
