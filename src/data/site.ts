@@ -12,7 +12,7 @@ export const site = {
   legalName: "Echelon Community Athletics Inc.",
   url: "https://echeloncommunity.ca",
   email: "hello@echeloncommunity.ca",
-  emailVerify: "Create this mailbox on echeloncommunity.ca (Cloudflare Email Routing is free) before launch.",
+  emailVerify: "Confirm this Google Workspace alias or mailbox receives mail before public promotion.",
   corporationNumber: "1832701-7",
   incorporated: "20 October 2026",
   region: "Durham Region, Ontario",
