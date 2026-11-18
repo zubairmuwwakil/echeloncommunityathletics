@@ -20,12 +20,12 @@ const faqs: { q: string; a: string; verify?: string }[] = [
   },
   {
     q: "What if I have to miss a week?",
-    a: "Let the organizer know through PB Social. Refund and make-up details are shown when you register.",
+    a: "Ask the organizer about missed sessions and the refund policy before registering. If you have an existing PB Social registration, use its organizer contact option.",
     verify: "State the actual refund and missed-session policy for the current season.",
   },
 ];
 ---
-<Layout title="Learn-to-play pickleball" description="Learn-to-play pickleball in Durham Region, Ontario: beginner-friendly coaching, recreational games and ways to get involved.">
+<Layout title="Beginner pickleball in Durham" description="Learn-to-play pickleball in Durham Region, Ontario: beginner-friendly coaching, recreational games and ways to get involved.">
   <section class="page-head">
     <div class="wrap">
       <div class="detail-hero tone-pickleball">
@@ -67,7 +67,7 @@ const faqs: { q: string; a: string; verify?: string }[] = [
       <div>
         <p class="kicker">The details</p>
         <h2 class="h2">Know before you go.</h2>
-        <p class="lede mt">Exact dates and times for each town are listed on the registration page.</p>
+        <p class="lede mt">Contact Echelon for confirmed dates, venue, fees and availability. This page does not confirm an open registration or a reserved spot.</p>
       </div>
       <dl class="facts">
         {p.facts.map((f) => (
@@ -75,6 +75,25 @@ const faqs: { q: string; a: string; verify?: string }[] = [
         ))}
         <div class="wide" data-verify={p.verify}><dt>Where</dt><dd>{p.where.join(", ")}</dd></div>
       </dl>
+    </div>
+  </section>
+
+  <section class="section reveal">
+    <div class="wrap split">
+      <div>
+        <p class="kicker">Start with confidence</p>
+        <h2 class="h2">Your first pickleball session.</h2>
+        <p class="lede">You do not need a partner or previous experience. Learn the fundamentals, then practise them with other recreational players.</p>
+      </div>
+      <div class="faq">
+        <h3>What you will practise</h3>
+        <p>Start with an underhand serve, a return and the two-bounce rule. Learn how to move with a doubles partner and how to play near the non-volley zone. Focus on keeping the ball in play before trying to hit harder.</p>
+        <h3>Before you arrive</h3>
+        <p>Ask about equipment availability, accessibility needs and the exact entrance to the gym. Bring clean indoor court shoes and water. Allow time to warm up and take breaks when needed.</p>
+        <h3>Find a group close to home</h3>
+        <p>Interested in Courtice, Port Perry, Whitby, Oshawa, Ajax or Bowmanville? Tell us your preferred town, skill level and schedule. We use inquiries to plan programs and confirm available facilities before announcing sessions.</p>
+        <p class="mt"><a class="more" href="/contact/">Ask about a local beginner program</a></p>
+      </div>
     </div>
   </section>
 
