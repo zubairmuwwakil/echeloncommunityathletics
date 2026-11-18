@@ -5,11 +5,11 @@ import { programs, activities, whoLabels, lineName, type Who } from "../../data/
 
 const whoOptions: [string, string][] = [["all", "Everyone"], ...(Object.entries(whoLabels) as [Who, string][])];
 ---
-<Layout title="Programs" description="Find an Echelon program by age, sport and town across Durham Region. Register for what's running now, or join the waitlist for what's next.">
+<Layout title="Programs" description="Explore community sport in Durham Region. Ask about beginner pickleball and express interest in future recreational programs.">
   <section class="page-head">
     <div class="wrap">
       <h1 class="display">Programs</h1>
-      <p class="lede">What's running now, and what we're building next. Join a waitlist for any program that isn't open yet. It helps us decide what to launch first.</p>
+      <p class="lede">Explore our current program focus and future ideas. Ask about upcoming pickleball sessions or tell us which future program you would join.</p>
     </div>
   </section>
 
@@ -26,7 +26,7 @@ const whoOptions: [string, string][] = [["all", "Everyone"], ...(Object.entries(
             <label class="chip"><input type="checkbox" name="activity" value={a} /><span>{a}</span></label>
           ))}
         </fieldset>
-        <label class="switch"><input type="checkbox" name="open" value="1" role="switch" /> Registering now</label>
+        <label class="switch"><input type="checkbox" name="open" value="1" role="switch" /> Current focus</label>
         <input type="hidden" name="line" value="" />
         <p class="filter-meta" aria-live="polite"><span data-count>{programs.length} programs</span><button type="reset" data-clear hidden>Clear filters</button></p>
       </form>
@@ -58,7 +58,7 @@ const whoOptions: [string, string][] = [["all", "Everyone"], ...(Object.entries(
               ))}
             </dl>
             <div class="card-foot">
-              <span class:list={["status", { open: p.status === "open" }]}>{p.status === "open" ? "Registering now" : "Gauging interest"}</span>
+              <span class:list={["status", { open: p.status === "open" }]}>{p.status === "open" ? "Current focus" : "Gauging interest"}</span>
               {p.status === "open" ? (
                 <a class="btn btn-primary btn-sm" href={p.href}>Details</a>
               ) : (
