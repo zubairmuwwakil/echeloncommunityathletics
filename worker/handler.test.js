@@ -5,7 +5,6 @@ import { handleInquiry, validate } from "./handler.js";
 const env = {
   MAIL_FROM: "website@echeloncommunity.ca",
   MAIL_TO: "inbox@example.org",
-  MAIL_DOMAIN: "echeloncommunity.ca",
   SITE_ORIGIN: "https://echeloncommunity.ca",
 };
 
@@ -37,19 +36,21 @@ test("sends a valid waitlist signup with the visitor as Reply-To", async () => {
   const res = await handleInquiry(post(interest), env, send);
   assert.equal(res.status, 200);
   assert.equal(sent.length, 1);
-  assert.match(sent[0], /^From: Echelon website <website@echeloncommunity\.ca>\r\n/);
-  assert.match(sent[0], /\r\nReply-To: <ama@example\.com>\r\n/);
-  assert.match(sent[0], /Subject: Waitlist: youth-camps \(Whitby\)/);
-  assert.match(sent[0], /For: My child/);
+  assert.equal(sent[0].from, "Echelon website <website@echeloncommunity.ca>");
+  assert.deepEqual(sent[0].to, ["inbox@example.org"]);
+  assert.equal(sent[0].reply_to, "ama@example.com");
+  assert.equal(sent[0].subject, "Waitlist: youth-camps (Whitby)");
+  assert.match(sent[0].text, /For: My child/);
 });
 
 test("a header injection attempt cannot add headers", async () => {
   const { sent, send } = capture();
   const res = await handleInquiry(post({ ...interest, name: "Eve\r\nBcc: victim@example.com", town: "Ajax\nX: y" }), env, send);
   assert.equal(res.status, 200);
-  const headerBlock = sent[0].split("\r\n\r\n")[0];
-  assert.doesNotMatch(headerBlock, /^Bcc:/m);
-  assert.doesNotMatch(headerBlock, /^X: y/m);
+  assert.equal(sent[0].subject, "Waitlist: youth-camps (Ajax X: y)");
+  assert.match(sent[0].text, /Name: Eve Bcc: victim@example.com/);
+  assert.doesNotMatch(sent[0].text, /^Bcc:/m);
+  assert.doesNotMatch(sent[0].text, /^X: y/m);
 });
 
 test("rejects an email address carrying a newline", () => {
@@ -91,8 +92,8 @@ test("answers 503 until email is configured, so the page offers the mailto fallb
   assert.equal(res.status, 503);
 });
 
-test("encodes non-ASCII subjects", async () => {
+test("preserves non-ASCII subjects in JSON email payloads", async () => {
   const { sent, send } = capture();
   await handleInquiry(post({ ...interest, town: "Port Perry — Scugog" }), env, send);
-  assert.match(sent[0], /Subject: =\?UTF-8\?B\?[A-Za-z0-9+/=]+\?=/);
+  assert.equal(sent[0].subject, "Waitlist: youth-camps (Port Perry — Scugog)");
 });

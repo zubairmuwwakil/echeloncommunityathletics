@@ -32,7 +32,7 @@ npm test           # form handler tests
 
 - [x] Replace placeholder founder content with a factual public introduction; a personal first-person story can still be added later
 - [ ] Real photos of real programs, with permission from the people in them
-- [ ] `hello@echeloncommunity.ca` exists (Cloudflare Email Routing, free)
+- [ ] Confirm `hello@echeloncommunity.ca` reaches the Echelon Google Workspace inbox
 - [ ] Configure a **separate Echelon organization** on PB Social and replace the current contact-based inquiry links with that organization’s real registration URLs
 - [ ] Play Fund set up as its own line in Echelon's books before asking anyone to give to it
 - [x] Remove unverified numeric impact statements until reliable sources and dates are ready
@@ -64,13 +64,13 @@ Review Actions → **Deploy Echelon website to Cloudflare** for success or clear
 
 ## Forms
 
-The waitlist, partner and contact forms post to `/api/inquiry`, which emails the submission to Echelon's inbox through Cloudflare's `send_email` binding. Nothing is stored in a database.
+The waitlist, partner and contact forms post to `/api/inquiry`, which emails the submission to Echelon's inbox through Resend. Nothing is stored in a database on this site. Resend processes the inquiry for delivery.
 
-Until email is configured, the endpoint answers `503` and the page offers a mailto link instead, so nothing is lost. To turn it on:
+Until email is configured, the endpoint answers `503` and the page offers a mailto link populated with the visitor's form details. To turn on direct delivery:
 
-1. Enable **Email Routing** on `echeloncommunity.ca` and verify the inbox that should receive submissions.
-2. In `wrangler.jsonc`, set `MAIL_FROM` (e.g. `website@echeloncommunity.ca`) and `MAIL_TO` (the verified inbox), and add the `send_email` binding shown in the comments.
-3. Deploy, then send a test from each form.
+1. Use a separate Echelon Resend account and verify `echeloncommunity.ca` for **sending only**. Keep the existing Google Workspace MX records at the zone apex; Resend's sending return-path records use a subdomain.
+2. In the Cloudflare `echelon-site` Worker, set `MAIL_TO` to the Echelon receiving inbox and `RESEND_API_KEY` to a send-only Resend key. Both are Worker secrets, never values in this public repository.
+3. Deploy, then submit a test from each form and verify that the messages reach the inbox. Check that the public `hello@echeloncommunity.ca` address also receives mail.
 
 Spam protection is a honeypot field plus a minimum fill time. Add Cloudflare Turnstile if spam gets through.
 

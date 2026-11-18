@@ -1,5 +1,5 @@
-import { EmailMessage } from "cloudflare:email";
 import { handleInquiry } from "./handler.js";
+import { sendInquiry } from "./mailer.js";
 
 /**
  * Serves the static site from ./dist and handles the one dynamic route.
@@ -9,8 +9,8 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     if (url.pathname === "/api/inquiry") {
-      const send = env.SEND_EMAIL
-        ? (raw) => env.SEND_EMAIL.send(new EmailMessage(env.MAIL_FROM, env.MAIL_TO, raw))
+      const send = env.RESEND_API_KEY
+        ? (email) => sendInquiry(email, env.RESEND_API_KEY)
         : null;
       return handleInquiry(request, env, send);
     }

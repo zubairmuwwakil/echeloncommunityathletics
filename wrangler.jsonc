@@ -15,11 +15,7 @@
   "routes": [{ "pattern": "echeloncommunity.ca", "custom_domain": true }],
   "vars": {
     "SITE_ORIGIN": "https://echeloncommunity.ca",
-    "MAIL_DOMAIN": "echeloncommunity.ca"
-    // Set when email is ready (see README, "Forms"):
-    // "MAIL_FROM": "website@echeloncommunity.ca",
-    // "MAIL_TO": "<the verified Echelon inbox>"
+    "MAIL_FROM": "website@echeloncommunity.ca"
   }
-  // Once Email Routing is on and MAIL_TO is verified, add:
-  // "send_email": [{ "name": "SEND_EMAIL", "destination_address": "<the verified Echelon inbox>" }]
+  // Set MAIL_TO and RESEND_API_KEY as Worker secrets; see README, "Forms".
 }

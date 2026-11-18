@@ -1,9 +1,8 @@
 /**
  * POST /api/inquiry: validates a website form and emails it to Echelon's inbox.
  *
- * Pure function of (request, env, send) so it can be tested in Node. `send(raw)`
- * delivers a raw RFC 5322 message; worker/index.js wires it to Cloudflare's
- * send_email binding, which can only deliver to addresses verified in Email Routing.
+ * Pure function of (request, env, send) so it can be tested in Node. `send(email)`
+ * delivers a validated inquiry through the configured mail provider.
  */
 
 const KINDS = new Set(["interest", "partner", "contact"]);
@@ -43,15 +42,6 @@ const json = (status, body) =>
 const oneLine = (v) => String(v ?? "").replace(/[\u0000-\u001f\u007f]+/g, " ").trim();
 const multiLine = (v) => String(v ?? "").replace(/\r\n?/g, "\n").replace(/[\u0000-\u0009\u000b-\u001f\u007f]/g, "").trim();
 
-/** RFC 2047 encoded-word, so non-ASCII names survive in the Subject. */
-const encodeHeader = (text) => {
-  if (/^[\x20-\x7e]*$/.test(text)) return text;
-  const bytes = new TextEncoder().encode(text);
-  let bin = "";
-  for (const b of bytes) bin += String.fromCharCode(b);
-  return `=?UTF-8?B?${btoa(bin)}?=`;
-};
-
 export function validate(input) {
   if (!input || typeof input !== "object") return { error: "invalid" };
   const kind = oneLine(input.kind);
@@ -89,19 +79,13 @@ export function compose({ kind, values }, env, now = new Date()) {
   if (values.message) lines.push("", values.message);
   lines.push("", `Consent: yes, via the ${kind} form on ${now.toISOString()}`, "Reply to this email to answer them directly.");
 
-  const id = `${now.getTime()}.${Math.random().toString(36).slice(2)}@${env.MAIL_DOMAIN}`;
-  const headers = [
-    `From: Echelon website <${env.MAIL_FROM}>`,
-    `To: <${env.MAIL_TO}>`,
-    `Reply-To: <${values.email}>`,
-    `Subject: ${encodeHeader(subjects[kind])}`,
-    `Date: ${now.toUTCString()}`,
-    `Message-ID: <${id}>`,
-    "MIME-Version: 1.0",
-    "Content-Type: text/plain; charset=utf-8",
-    "Content-Transfer-Encoding: 8bit",
-  ];
-  return `${headers.join("\r\n")}\r\n\r\n${lines.join("\r\n")}\r\n`;
+  return {
+    from: `Echelon website <${env.MAIL_FROM}>`,
+    to: [env.MAIL_TO],
+    reply_to: values.email,
+    subject: subjects[kind],
+    text: `${lines.join("\n")}\n`,
+  };
 }
 
 export async function handleInquiry(request, env, send) {
@@ -127,10 +111,10 @@ export async function handleInquiry(request, env, send) {
   const result = validate(input);
   if (result.error) return json(422, result);
 
-  if (!send || !env.MAIL_FROM || !env.MAIL_TO || !env.MAIL_DOMAIN) return json(503, { error: "not_configured" });
+  if (!send || !env.MAIL_FROM || !env.MAIL_TO) return json(503, { error: "not_configured" });
 
   try {
-    await send(compose(result, env), env);
+    await send(compose(result, env));
   } catch {
     return json(502, { error: "send_failed" });
   }
