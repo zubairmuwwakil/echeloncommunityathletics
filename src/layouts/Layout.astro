@@ -12,11 +12,11 @@ interface Props {
 
 const {
   title,
-  description = "Echelon Community Athletics is a federally incorporated Canadian not-for-profit making sport and recreation open to everyone. Starting in Durham Region, Ontario.",
+  description = "Community sports and beginner pickleball in Durham Region, Ontario. Echelon is a Canadian nonprofit helping more people get active and connect.",
   jsonLd,
 } = Astro.props;
 
-const fullTitle = title ? `${title} · ${site.name}` : `${site.name} · Sport and recreation for everyone`;
+const fullTitle = title ? `${title} · ${site.name}` : `${site.name} · Durham Region sports`;
 const canonical = new URL(Astro.url.pathname, site.url).href;
 const path = Astro.url.pathname;
 const nav = [
