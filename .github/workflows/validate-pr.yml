@@ -1,0 +1,32 @@
+name: Validate website PR
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+      - name: Verify generated SEO output
+        run: |
+          set -eu
+          test -s dist/index.html
+          test -s dist/about/index.html
+          test -s dist/programs/pickleball/index.html
+          test -s dist/sitemap.xml
+          test -s dist/robots.txt
+          grep -q 'index,follow' dist/index.html
+          grep -q 'https://echeloncommunity.ca/sitemap.xml' dist/robots.txt
+          grep -q 'Your first pickleball session' dist/programs/pickleball/index.html
