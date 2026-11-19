@@ -11,17 +11,14 @@ export const site = {
   name: "Echelon Community Athletics",
   legalName: "Echelon Community Athletics Inc.",
   url: "https://echeloncommunity.ca",
-  email: "zubair@echeloncommunity.ca",
-  emailVerify: "Switch to hello@ only after its Google Workspace alias is created and tested.",
+  email: "hello@echeloncommunity.ca",
   corporationNumber: "1832701-7",
   incorporated: "20 October 2026",
   region: "Durham Region, Ontario",
   vision: "A place to play for everyone, in every community we reach.",
   mission:
     "Echelon Community Athletics Inc. promotes physical health, active living, and community connection through accessible recreational sports programs.",
-  registerUrl: "/contact/",
-  registerVerify:
-    "Connect a dedicated Echelon PB Social registration page after its organization and payment setup are verified. Until then, direct inquiries to Echelon contact.",
+  registerUrl: "/programs/pickleball/#current-programs",
 };
 
 export type Who = "kids" | "adults" | "older";

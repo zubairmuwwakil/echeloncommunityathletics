@@ -1,9 +1,13 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import Glyph from "../../components/Glyph.astro";
-import { programs, site } from "../../data/site";
+import { programs } from "../../data/site";
+import { pickleballLocalDate, pickleballSeries } from "../../data/pickleball-series";
 
 const p = programs.find((x) => x.id === "pickleball-learn")!;
+const today = pickleballLocalDate();
+const currentSeries = pickleballSeries.filter((series) => series.endsOn >= today);
+const pastSeries = pickleballSeries.filter((series) => series.endsOn < today);
 const faqs: { q: string; a: string; verify?: string }[] = [
   {
     q: "I've never played. Is this for me?",
@@ -34,9 +38,55 @@ const faqs: { q: string; a: string; verify?: string }[] = [
         <h1 class="display mt">{p.title}</h1>
         <p class="lede">{p.summary}</p>
         <div class="feature-actions">
-          <a class="btn btn-primary" href={site.registerUrl} data-verify={site.registerVerify}>Ask about upcoming sessions</a>
-          <a class="more" href="#details">Dates, places and price</a>
+          <a class="btn btn-primary" href="#current-programs">See dates and venues</a>
+          <button class="more" type="button" data-interest="pickleball-learn">Join the interest list</button>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight" id="current-programs">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="h2">Current pickleball programs</h2>
+        <p class="lede">Organized by Echelon Community Athletics. Learn-to-play sessions are led by Zubair Muwwakil, a Pickleball Canada–certified coach. Registration and payment are handled through PB Social.</p>
+      </div>
+      <div class="series-grid">
+        {currentSeries.map((series) => (
+          <article class="panel" data-series-end={series.endsOn}>
+            <h3 class="h3">{series.name}</h3>
+            <p>{series.venue}</p>
+            <p>{series.schedule}</p>
+            <p data-series-registration>{series.fee}</p>
+            <p class="mt" data-series-registration><a class="more" href={series.url}>{series.action}</a></p>
+          </article>
+        ))}
+        <article class="panel">
+          <h3 class="h3">Courtice beginner and intermediate leagues</h3>
+          <p>Good Shepherd Elementary School, Courtice</p>
+          <p>Thursday sessions are planned for January 2027. Ask us about the schedule before booking.</p>
+          <p class="mt"><button class="more" type="button" data-interest="pickleball-learn">Get Courtice updates</button></p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight" id="recent-programs">
+    <div class="wrap">
+      <div class="section-head"><h2 class="h2">Recent pickleball sessions</h2></div>
+      <div class="series-grid" data-recent-series>
+        <article class="panel">
+          <h3 class="h3">Beginner pickleball in Port Perry</h3>
+          <p>November 16, 2026 · Port Perry High School</p>
+          <p>Week three of our Monday learn-to-play series brought new and returning players together for coached practice and match play. Players had time to work on their strokes and then use them in recreational doubles games.</p>
+        </article>
+        {pastSeries.map((series) => (
+          <article class="panel">
+            <h3 class="h3">{series.name}</h3>
+            <p>{series.venue}</p>
+            <p>{series.schedule}</p>
+          </article>
+        ))}
       </div>
     </div>
   </section>
@@ -67,7 +117,7 @@ const faqs: { q: string; a: string; verify?: string }[] = [
       <div>
         <p class="kicker">The details</p>
         <h2 class="h2">Know before you go.</h2>
-        <p class="lede mt">Contact Echelon for confirmed dates, venue, fees and availability. This page does not confirm an open registration or a reserved spot.</p>
+        <p class="lede mt">Each listing above shows the program schedule and venue. PB Social shows current availability and final prices. For help with a booking or a refund, <a href="/contact/">contact Echelon</a>.</p>
       </div>
       <dl class="facts">
         {p.facts.map((f) => (
@@ -118,11 +168,29 @@ const faqs: { q: string; a: string; verify?: string }[] = [
     <div class="wrap">
       <div class="band">
         <h2 class="h2">Ready for your first game?</h2>
-        <p class="lede">Contact us about upcoming sessions. Once Echelon registration is available, we will share the correct program link.</p>
+        <p class="lede">Choose your town on the interest form. We’ll let you know when we have new pickleball dates there.</p>
         <div class="feature-actions">
-          <a class="btn btn-quiet" href={site.registerUrl}>Ask about upcoming sessions</a>
+          <button class="btn btn-quiet" type="button" data-interest="pickleball-learn">Get pickleball updates</button>
         </div>
       </div>
     </div>
   </section>
 </Layout>
+
+<style>
+  .series-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 16px; }
+  .series-grid .panel p + p { margin-top: 6px; }
+</style>
+
+<script>
+  import { pickleballLocalDate } from "../../data/pickleball-series";
+
+  const recent = document.querySelector("[data-recent-series]");
+  const today = pickleballLocalDate();
+  document.querySelectorAll<HTMLElement>("[data-series-end]").forEach((article) => {
+    if (recent && article.dataset.seriesEnd! < today) {
+      article.querySelectorAll("[data-series-registration]").forEach((item) => item.remove());
+      recent.append(article);
+    }
+  });
+</script>

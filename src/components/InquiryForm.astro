@@ -7,7 +7,7 @@ interface Props {
   partnerType?: string;
 }
 const { kind, id, partnerType } = Astro.props;
-const interestPrograms = programs.filter((p) => p.status === "interest");
+const interestPrograms = programs.filter((p) => p.status === "interest" || p.id === "pickleball-learn");
 const partnerTypes = [
   "School or school board",
   "Municipality or community centre",
