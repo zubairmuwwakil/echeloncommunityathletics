@@ -2,6 +2,7 @@
 import "../styles/global.css";
 import BrandMark from "../components/BrandMark.astro";
 import InquiryForm from "../components/InquiryForm.astro";
+import AnalyticsPreference from "../components/AnalyticsPreference.astro";
 import { site, lines } from "../data/site";
 
 interface Props {
@@ -104,6 +105,7 @@ const current = (href: string) => (path.startsWith(href) ? "page" : undefined);
               <li><a href="/support/">Support us</a></li>
               <li><a href="/contact/">Contact</a></li>
               <li><a href="/privacy/">Privacy</a></li>
+              {process.env.PUBLIC_GA4_MEASUREMENT_ID && <li><AnalyticsPreference /></li>}
             </ul>
           </div>
           <div>

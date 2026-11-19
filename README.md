@@ -90,3 +90,9 @@ Spam protection is a honeypot field plus a minimum fill time. Add Cloudflare Tur
 - Links to **Zemi Echelon** and **PB Social** clarify connected people and software; neither is owned by this nonprofit, and the nonprofit is not a commercial subsidiary.
 - Submit this sitemap to Google Search Console **only after the custom domain is serving the current build**; indexing is permitted, not guaranteed.
 - Confirm Cloudflare deployment, the `hello@echeloncommunity.ca` mailbox, and the separate PB Social registration organization before promoting active registration links.
+
+## Website analytics
+
+1. Create a dedicated Echelon Community Athletics Google Analytics 4 property and a web data stream for `https://echeloncommunity.ca`. Turn off enhanced measurement and leave Google signals disabled.
+2. Set `PUBLIC_GA4_MEASUREMENT_ID` in the GitHub `production` environment variables to the new stream's `G-` ID. Run the deployment workflow. Builds without an ID leave analytics off.
+3. Open the website, enable optional analytics in the footer, and check for the page view in the Echelon property's Realtime report. Clear the checkbox and open another page to confirm the Google tag stays unloaded.

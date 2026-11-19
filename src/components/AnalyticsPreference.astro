@@ -1,0 +1,72 @@
+<label class="check" data-analytics={process.env.PUBLIC_GA4_MEASUREMENT_ID} hidden>
+  <input type="checkbox" />
+  <span>Allow optional analytics</span>
+</label>
+
+<style>
+  [hidden] { display: none; }
+</style>
+
+<script>
+  const preference = document.querySelector<HTMLLabelElement>("[data-analytics]");
+  const checkbox = preference?.querySelector("input");
+  const measurementId = preference?.dataset.analytics;
+
+  if (preference && checkbox && measurementId) {
+    const storageKey = "echelon-analytics";
+    const disableKey = `ga-disable-${measurementId}`;
+    const analyticsWindow = window as Window & {
+      dataLayer?: IArguments[];
+    } & Partial<Record<`ga-disable-${string}`, boolean>>;
+    let started = false;
+
+    function startAnalytics(id: string) {
+      analyticsWindow[`ga-disable-${id}`] = false;
+      if (started) return;
+      started = true;
+
+      const dataLayer = analyticsWindow.dataLayer ??= [];
+      function gtag(..._parameters: unknown[]) {
+        dataLayer.push(arguments);
+      }
+      const referrer = document.referrer ? new URL(document.referrer).origin : "";
+
+      gtag("js", new Date());
+      gtag("config", id, {
+        allow_google_signals: false,
+        allow_ad_personalization_signals: false,
+        cookie_domain: window.location.hostname,
+        cookie_prefix: "eca",
+        page_location: window.location.origin + window.location.pathname,
+        page_referrer: referrer,
+      });
+
+      const tag = document.createElement("script");
+      tag.async = true;
+      tag.src = `https://www.googletagmanager.com/gtag/js?id=${id}`;
+      document.head.append(tag);
+    }
+
+    try {
+      checkbox.checked = localStorage.getItem(storageKey) === "allowed";
+      preference.hidden = false;
+      if (checkbox.checked) startAnalytics(measurementId);
+
+      checkbox.addEventListener("change", () => {
+        if (!checkbox.checked) analyticsWindow[disableKey] = true;
+        try {
+          if (checkbox.checked) {
+            localStorage.setItem(storageKey, "allowed");
+            startAnalytics(measurementId);
+          } else {
+            localStorage.removeItem(storageKey);
+          }
+        } catch {
+          checkbox.checked = false;
+        }
+      });
+    } catch {
+      // The site works without analytics when browser storage is unavailable.
+    }
+  }
+</script>
